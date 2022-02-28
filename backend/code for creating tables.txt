@@ -43,3 +43,14 @@ rows = connection.execute(
       PRIMARY KEY( order_number )
       );
       """)
+
+      connection.execute(
+              """
+              create table events(
+              date DATE,
+              discount_type BOOLEAN,
+              discount_amount FLOAT,
+              PRIMARY KEY( date )
+             );
+              """
+          )
