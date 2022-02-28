@@ -1,0 +1,45 @@
+rows = connection.execute(
+       """
+       create table user_info(
+       name VARCHAR(45),
+       user_id INT,
+       payment_type INT,
+       birthday DATE,
+       user_email VARCHAR(45),
+       user_password VARCHAR(45),
+       PRIMARY KEY( user_id )
+       );
+       """)
+
+rows = connection.execute(
+      """
+      create table rest_info(
+      name VARCHAR(45),
+      rest_id INT,
+      rating FLOAT,
+      PRIMARY KEY( rest_id )
+      );
+      """)
+
+rows = connection.execute(
+       """
+       create table menu_info(
+       menu_name VARCHAR(45),
+       rest_id INT,
+       price FLOAT,
+       PRIMARY KEY( rest_id )
+       );
+       """)
+
+rows = connection.execute(
+      """
+      create table order_history(
+      order_number INT,
+      user_id INT,
+      rest_id INT,
+      price FLOAT,
+      status INT,
+      option BOOLEAN,
+      PRIMARY KEY( order_number )
+      );
+      """)
