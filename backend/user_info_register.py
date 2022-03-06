@@ -123,9 +123,7 @@ def lambda_handler(event, context):
     birthday =  event.get('birthday')
     email = event.get('email')
     password = event.get('password')
-
-
-
+    
     #converting birthday to the correct format
     birthday = datetime.strptime(birthday, '%Y-%m-%d')
     birthday = birthday.strftime('%Y-%m-%d %H:%M:%S')
@@ -153,14 +151,13 @@ def lambda_handler(event, context):
         return MSG_FAIL_TO_CREATE
 
 
-
 if __name__ == "__main__":
     body = {
-        "name": "FINALFINALFINAL",
+        "name": "prado",
         "payment": "credit card",
         "birthday": "2020-11-03",
-        "email": "dwejhh@ogle.com",
-        "password": "PRADO#123123123123123"
+        "email": "prado@ogle.com",
+        "password": "Prad#ji"
     }
 
     event = {

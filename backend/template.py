@@ -54,7 +54,7 @@ def db_connection():
 @input_checking   
 def lambda_handler(event, context):
     # TODO implement
-    name = event.get('name')
+    fname = event.get('name')
     user_id = int(event.get('user_id'))
     payment_type = event.get('payment_type')
     birthday = event.get('birthday')
@@ -66,7 +66,7 @@ def lambda_handler(event, context):
     h.update(b'user_password')
     # user_password = h.hexdigest()
       
-    # print(name)
+    print(fname)
     # print(user_id)
     # print(payment_type)
     # print(birthday)
@@ -93,15 +93,34 @@ def lambda_handler(event, context):
 
 
     # version 2----------------------------------------------------------------------------------------------------------
-    sql = "INSERT INTO user_info(name, user_id, payment_type, birthday, user_email, user_password) VALUES (%s, %s, %s, %s, %s, %s)" 
-    val = (name, random.randint(1000,9999999), payment_type, birthday, user_email, user_password)
+    # sql = "INSERT INTO user_info(name, user_id, payment_type, birthday, user_email, user_password) VALUES (%s, %s, %s, %s, %s, %s)" 
+    # val = (name, random.randint(1000,9999999), payment_type, birthday, user_email, user_password)
 
     # connect to db
     engine = db_connection()
 
     connection = engine.connect()
 
-    connection.execute(sql,val)
+    # connection.execute(sql,val)
+
+    rows = connection.execute(
+       """
+       create table user_info(
+       name VARCHAR(45),
+       user_id VARCHAR(50),
+       payment_type VARCHAR(45),
+       birthday DATE,
+       user_email VARCHAR(45) UNIQUE,
+       user_password VARCHAR(64),
+       PRIMARY KEY( user_id )
+       );
+       """)
+
+    # connection.execute(
+    #     """
+    #     DROP TABLE user_info;
+    #     """
+    # )
 
 
     try:
