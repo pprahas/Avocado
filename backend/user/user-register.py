@@ -142,7 +142,7 @@ def lambda_handler(event, context):
     try:
         sql = "INSERT INTO user_info(name, user_id, payment_type, birthday, user_email, user_password) VALUES (%s, %s, %s, %s, %s, %s)" 
         val = (name, userid, payment, birthday, email, hashed_password)
-        connection.execute(sql,val);
+        connection.execute(sql,val)
         
         return MSG_SUCCESS
 
