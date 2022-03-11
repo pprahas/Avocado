@@ -14,8 +14,9 @@ with open("Transcript Fall 2021.pdf", "rb") as pdf_file:
 print(type(encoded_string))
 
 # s3 = boto3.resource('s3')
-# bucket_name = 'db-penguin-bucket'
-# filename = 'some/new.pdf'
+# bucket_name = 'avocado-bucket-1'
+# filename = 'MENU/new.pdf'
+# filename = 'RESTAURANTS/new.pdf'
 
 # obj = s3.Object(bucket_name, filename)
 # location = obj.put(Body=base64.b64decode(encoded_string))

@@ -58,25 +58,19 @@ def db_connection():
 
 @input_checking   
 def lambda_handler(event, context):
-    # TODO implement
-    name = event.get('name')
-    user_id = int(event.get('user_id'))
-    payment_type = event.get('payment_type')
-    birthday = event.get('birthday')
-    user_email = event.get('user_email')
-    user_password = event.get('user_password')
+    rest_type = event.get('rest_type')
 
-    sql = "SELECT * FROM rest_info WHERE rest_type = \"{}\" ORDER BY rating DESC LIMIT 5;", 
+    sql = "SELECT * FROM rest_info WHERE rest_type = \"{}\" ORDER BY rating DESC LIMIT 5;".format(rest_type)
 
     #connect to db
     engine = db_connection()
     connection = engine.connect()
     rows = connection.execute(sql)
-    asian_rest = []
+    req_rest = []
 
 
     for row in rows:
-        asian_rest.append(
+        req_rest.append(
             {
                 "rest_id": row.rest_id,
                 "rest_name": row.name,
@@ -87,7 +81,7 @@ def lambda_handler(event, context):
         )
 
     try:
-        return asian_rest
+        return req_rest
 
     except Exception as e:
         print(e)
@@ -95,14 +89,10 @@ def lambda_handler(event, context):
 
 
 
+
 if __name__ == "__main__":
     body = {
-        "name": "john doe",
-        "user_id": "183269",
-        "payment_type": "Cash13",
-        "birthday": "2022-02-28",
-        "user_email": "tempemail@gmail.com",
-        "user_password": "pwefwf@2ht3"
+        "rest_type": "Asian",
     }
 
     event = {

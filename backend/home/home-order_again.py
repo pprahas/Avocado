@@ -9,7 +9,7 @@ from datetime import date
 from datetime import timedelta
 import random
 import sqlite3
-
+import boto3
 
 MSG_REQUEST_NO_BODY = {"status": 500, "statusText": "Requests has no body.", "body": {}}
 MSG_REQUEST_INCORRECT_FORMAT = {"status": 500, "statusText": "Requests incorrect format.", "body": {}}
@@ -79,6 +79,7 @@ def lambda_handler(event, context):
         result = row[0]
 
     sql = "SELECT * FROM rest_info WHERE rest_id = '{}'".format(result)
+
     rows = connection.execute(sql)
     latest_rest = []
     
