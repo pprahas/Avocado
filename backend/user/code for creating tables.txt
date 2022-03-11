@@ -2,12 +2,12 @@ rows = connection.execute(
        """
        create table user_info(
        name VARCHAR(45),
-       user_id VARCHAR(150),
-       payment_type VARCHAR(45),
+       user_id INT,
        birthday DATE,
        user_email VARCHAR(45),
        user_password VARCHAR(150),
-       PRIMARY KEY( user_id )
+       PRIMARY KEY( user_id ),
+       UNIQUE (user_email)
        );
        """)
 
