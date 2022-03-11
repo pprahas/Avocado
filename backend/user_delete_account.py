@@ -111,8 +111,6 @@ def lambda_handler(event, context):
         print("Delete failed")
         return MSG_FAIL_TO_CREATE
 
-
-
 if __name__ == "__main__":
     body = {
         "user_id": "2903e1b4-9a86-11ec-8341-dc1ba10bf9f9",

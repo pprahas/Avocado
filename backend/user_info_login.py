@@ -114,6 +114,7 @@ def lambda_handler(event, context):
 if __name__ == "__main__":
     body = {
         "user_id": "44a1279e-9cf0-11ec-bb93-dc1ba10bf9f9",
+        "user_email": ".com",
         "user_password": "Prad#ji"
     }
 

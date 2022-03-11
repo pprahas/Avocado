@@ -5,11 +5,13 @@ from datetime import datetime
 import re
 from hashlib import sha256
 import uuid
+from email_validator import validate_email, EmailNotValidError
+
 
 MSG_REQUEST_NO_BODY = {"status": 500, "statusText": "Requests has no body.", "body": {}}
 MSG_REQUEST_INCORRECT_FORMAT = {"status": 500, "statusText": "Requests incorrect format.", "body": {}}
 MSG_SUCCESS = {"status": 200, "statusText": "User created account successfully.", "body": {}}
-MSG_FAIL_TO_CREATE = {"status": 422, "statusText": "Input is invalid.", "body": {}}
+MSG_FAIL_TO_CREATE = {"status": 422, "statusText": "The account has not been created.", "body": {}}
 
 
 def input_checking( func ):
@@ -27,6 +29,7 @@ def input_checking( func ):
             assert content.get( "birthday" ), "Birthday not found."
             assert content.get( "email" ), "Email not found"
             assert content.get( "password" ), "Password not found."
+            assert content.get( "password_confirm" ), "Confirm Password not found."
 
             # assert ";" not in content.get( "firstName" ), "Semicolon is present."
 
@@ -62,8 +65,22 @@ def input_checking( func ):
 
             if (len(email) > 44):
                 raise Exception("The email is too long.")
-            if(email.find('@') == -1):
-                raise Exception('The email does not contain the "@" character.')
+            # if(email.find('@') == -1):
+            #     raise Exception('The email does not contain the "@" character.')
+
+            # email_regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+
+            # if(re.fullmatch(email_regex, email)):
+            #     raise Exception("The email is  invalid.")
+            try:
+
+                emailObjet = validate_email(email)
+
+                email = emailObjet.email
+            
+            except EmailNotValidError as errorMsg:
+
+                raise Exception(str(errorMsg))
 
             #password input validation
             password = content.get( "password" )
@@ -123,13 +140,14 @@ def lambda_handler(event, context):
     birthday =  event.get('birthday')
     email = event.get('email')
     password = event.get('password')
+    confirm_password = event.get('password_confirm')
     
     #converting birthday to the correct format
     birthday = datetime.strptime(birthday, '%Y-%m-%d')
     birthday = birthday.strftime('%Y-%m-%d %H:%M:%S')
 
     #generating a unique userid
-    userid = uuid.uuid1()
+    userid = uuid.uuid4()
 
     #hashing the password
     hashed_password = sha256(password.encode('utf-8')).hexdigest()
@@ -143,12 +161,10 @@ def lambda_handler(event, context):
         sql = "INSERT INTO user_info(name, user_id, payment_type, birthday, user_email, user_password) VALUES (%s, %s, %s, %s, %s, %s)" 
         val = (name, userid, payment, birthday, email, hashed_password)
         connection.execute(sql,val);
-        
         return MSG_SUCCESS
 
     except Exception as e:
-        print("Email is not unique.")
-        return MSG_FAIL_TO_CREATE
+        return {"status": 422, "statusText": "The email is not unique.", "body": {}}
 
 
 if __name__ == "__main__":
@@ -156,8 +172,9 @@ if __name__ == "__main__":
         "name": "prado",
         "payment": "credit card",
         "birthday": "2020-11-03",
-        "email": "prado@ogle.com",
-        "password": "Prad#ji"
+        "email": "prado@gmail.com",
+        "password": "Prad#ji",
+        "password_confirm":"Prad#ji"
     }
 
     event = {
