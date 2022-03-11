@@ -58,7 +58,6 @@ def db_connection():
 
 @input_checking   
 def lambda_handler(event, context):
-    # TODO implement
     name = event.get('name')
     user_id = int(event.get('user_id'))
     payment_type = event.get('payment_type')
@@ -66,7 +65,7 @@ def lambda_handler(event, context):
     user_email = event.get('user_email')
     user_password = event.get('user_password')
 
-    sql = "SELECT * FROM rest_info WHERE rest_type = \"{}\" ORDER BY rating DESC LIMIT 5;", 
+    sql = "SELECT * FROM rest_info WHERE rest_type = \"Asian\" ORDER BY rating DESC LIMIT 5;"
 
     #connect to db
     engine = db_connection()
@@ -92,6 +91,7 @@ def lambda_handler(event, context):
     except Exception as e:
         print(e)
         return MSG_ORDER_AGAIN_FAIL   
+
 
 
 
