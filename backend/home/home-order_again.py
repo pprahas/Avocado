@@ -59,12 +59,7 @@ def db_connection():
 @input_checking   
 def lambda_handler(event, context):
     # TODO implement
-    name = event.get('name')
     user_id = int(event.get('user_id'))
-    payment_type = event.get('payment_type')
-    birthday = event.get('birthday')
-    user_email = event.get('user_email')
-    user_password = event.get('user_password')
 
     # ONLY FOR ORDER AGAIN -----------------------------------------------------------------------------------------------
 
@@ -103,12 +98,7 @@ def lambda_handler(event, context):
 
 if __name__ == "__main__":
     body = {
-        "name": "john doe",
         "user_id": "183269",
-        "payment_type": "Cash13",
-        "birthday": "2022-02-28",
-        "user_email": "tempemail@gmail.com",
-        "user_password": "pwefwf@2ht3"
     }
 
     event = {
