@@ -209,7 +209,6 @@ def lambda_handler(event, context):
     except Exception as e:
         return {"status": 422, "statusText": "The email is not unique.", "body": {}}
 
-
 if __name__ == "__main__":
     body = {
         "name": "Prado aqef",
