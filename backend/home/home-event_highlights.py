@@ -60,41 +60,37 @@ def db_connection():
 
 @input_checking   
 def lambda_handler(event, context):
+    date_check = event.get('date')
     
-    sql = "SELECT rest_type FROM events WHERE date = '{}'".format(datetime.datetime.today())
+    sql = "SELECT rest_type FROM events WHERE date = '{}'".format(date_check)
 
     #connect to db
     engine = db_connection()
     connection = engine.connect()
     rows = connection.execute(sql)
+    rest_type_result = []
 
-    if not rows :
+    for row in rows:
+        result = row.rest_type
+    
+    if not result:
         return MSG_NO_DISC
     else:
-        rest_type_result = []
-        for row in rows:
-            rest_type_result.append(
-                {
-                    "rest_type": row.rest_type,
-                }
-        )
-    
-        sql = "SELECT * FROM rest_info WHERE rest_type = \"{}\"".format(rest_type_result)
-        rows = connection.execute(sql)
+        sql = "SELECT * FROM rest_info WHERE rest_type = \"{}\"".format(result)
+        new_rows = connection.execute(sql)
 
         rests_disc = []
 
-        for row in rows:
+        for new_row in new_rows:
             rests_disc.append(
                 {
-                    "rest_id": row.rest_id,
-                    "rest_name": row.name,
-                    "rest_type": row.rest_type,
-                    "rating": row.rating,
-                    "img_path": row.filepath_s3
+                    "rest_id": new_row.rest_id,
+                    "rest_name": new_row.name,
+                    "rest_type": new_row.rest_type,
+                    "rating": new_row.rating,
+                    "img_path": new_row.filepath_s3
                 }
             )
-
 
         try:
             return rests_disc
@@ -108,7 +104,7 @@ def lambda_handler(event, context):
 
 if __name__ == "__main__":
     body = {
-        "date": "2022-02-28",
+        "date": "2022-03-11",
     }
 
     event = {
