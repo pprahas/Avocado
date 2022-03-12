@@ -1,14 +1,16 @@
-from base64 import encode
+import uuid
 import json
 import sqlalchemy as db
+from datetime import date
+import cart_list_of_items as Cart
 
 MSG_REQUEST_NO_BODY = {"status": 500, "statusText": "Requests has no body.", "body": {}}
 MSG_REQUEST_INCORRECT_FORMAT = {"status": 500, "statusText": "Requests incorrect format.", "body": {}}
 MSG_SUCCESS = {"status": 200, "statusText": "User created account successfully.", "body": {}}
 MSG_FAIL_TO_CREATE = {"status": 422, "statusText": "Account creation failed.", "body": {}}
 
-# Establish Connection
-from main import MSG_REQUEST_INCORRECT_FORMAT
+# # Establish Connection
+# from main import MSG_REQUEST_INCORRECT_FORMAT
 
 
 def db_connection():
@@ -34,7 +36,7 @@ def input_checking(func):
         """decorator for input checking"""
         try:
             assert content.get( "user_id" ), "User ID not found"
-            assert content.get( "food_id" ), "Food ID not found"
+            assert content.get( "options" ), "Option not found"
             pass
 
         except Exception as e:
@@ -55,16 +57,22 @@ def lambda_handler(event, context):
     engine = db_connection()
     connection = engine.connect()
 
-    # 0 = In Cart / 1 = Order Received / 2 = On Preparation / 3 = Complete
-    status = 0
     user_id = int(event.get('user_id'))
-    food_id = int(event.get('food_id'))
+    option = int(event.get('options'))
 
-    sql = "DELETE FROM cart WHERE user_id = %s AND food_id = %s;"
-    value = (user_id, food_id)
+    today = date.today()
+    status = 1
+    order_number = uuid.uuid4().int % 2147483647
 
-    connection.execute(sql, value)
-    print("\nSuccessfully deleted {} ordered by {} in the cart\n".format(food_id, user_id))
+    cart = Cart.lambda_handler(event, context)
+
+    print(cart['body'])
+
+    # sql = "INSERT INTO order_history(order_number, user_id, rest_id, price, options, status, order_date) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+    # value = (order_number, user_id, rest_id, price, option, status, today)
+
+    # connection.execute(sql, value)
+    print("\nSuccessfully submited order\n")
 
     try:
         return MSG_SUCCESS
@@ -76,7 +84,7 @@ def lambda_handler(event, context):
 if __name__ == "__main__":
     body = {
         "user_id": "5000",
-        "food_id": "100"
+        "options": "1"
     }
     event = {
         "body": json.dumps(body)
