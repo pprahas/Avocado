@@ -6,6 +6,9 @@ import re
 from hashlib import sha256
 import uuid
 
+#returning one exception containing all the errors
+one_exception = []
+
 MSG_REQUEST_NO_BODY = {"status": 500, "statusText": "Requests has no body.", "body": {}}
 MSG_REQUEST_INCORRECT_FORMAT = {"status": 500, "statusText": "Requests incorrect format.", "body": {}}
 MSG_SUCCESS = {"status": 200, "statusText": "User created account successfully.", "body": {}}
@@ -29,8 +32,7 @@ def input_checking( func ):
 
             # assert ";" not in content.get( "firstName" ), "Semicolon is present."
 
-            #returning one exception containing all the errors
-            one_exception = []
+           
 
             #name input validation
             name = content.get( "name" )
@@ -126,14 +128,15 @@ def input_checking( func ):
                 one_exception += ["The password and the confirm password do not match."]
                 # raise Exception('The password and the confirm password do not match')
             
-            final_exception = ""
-            for i in range(len(one_exception)):
-                # print (one_exception[i])
-                final_exception = one_exception[i] + " " + final_exception
+            # final_exception = ""
+            # for i in range(len(one_exception)):
+            #     # print (one_exception[i])
+            #     final_exception = one_exception[i] + " " + final_exception
 
-            final_exception = final_exception[:-1]
-            if(len(one_exception) > 0):
-                raise Exception(final_exception)
+            # final_exception = final_exception[:-1]
+            # if(len(one_exception) > 0):
+                # raise Exception(final_exception)
+                # return { "status": 422, "statusText": "Account field missing.", "body": one_exception }
             # print (final_exception)
 
             print(event)
@@ -207,7 +210,9 @@ def lambda_handler(event, context):
         return MSG_SUCCESS
 
     except Exception as e:
-        return {"status": 422, "statusText": "The email is not unique.", "body": {}}
+        one_exception += ["The email is not unique."]
+        return { "status": 422, "statusText": "Account field missing.", "body": one_exception }
+        # return {"status": 422, "statusText": "The email is not unique.", "body": {}}
 
 if __name__ == "__main__":
     body = {

@@ -18,7 +18,7 @@ def input_checking( func ):
 
         """decorator for input checking"""
         try:
-            assert content.get( "user_id" ), "User ID not found"
+            assert content.get( "user_email" ), "User ID not found"
             assert content.get( "user_password" ), "User password not found"
             print(event)
 
@@ -51,7 +51,7 @@ def db_connection():
 def lambda_handler(event, context):
 
     #retrieving from the json file 
-    user_id = event.get('user_id')
+    user_email = event.get('user_email')
     user_password = event.get('user_password')
 
     # print(user_id)
@@ -62,7 +62,7 @@ def lambda_handler(event, context):
 
     connection = engine.connect()
 
-    user_id_query_count = "SELECT COUNT(user_id) FROM avocado1.user_info where user_id = \'" + user_id + "\';"
+    user_id_query_count = "SELECT COUNT(user_email) FROM avocado1.user_info where user_email = \'" + user_email + "\';"
     # print (user_id_query_count)
         
     user_id_db_count = connection.execute(user_id_query_count)
@@ -78,7 +78,7 @@ def lambda_handler(event, context):
         return MSG_FAIL_TO_CREATE
     
 
-    user_password_query = "SELECT user_password FROM avocado1.user_info where user_id = \'" + user_id + "\';"
+    user_password_query = "SELECT user_password FROM avocado1.user_info where user_email = \'" + user_email + "\';"
 
     user_password_db_raw = connection.execute(user_password_query)
 
@@ -113,8 +113,7 @@ def lambda_handler(event, context):
 
 if __name__ == "__main__":
     body = {
-        "user_id": "44a1279e-9cf0-11ec-bb93-dc1ba10bf9f9",
-        "user_email": ".com",
+        "user_email": "sum@c8o.uk",
         "user_password": "Prad#ji"
     }
 
