@@ -45,12 +45,12 @@ a:hover{
 
 .main_container{
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: space-around;
   width: 90%;
-  height: 90%;
-  min-height: 500px;
+  height: 200px;
+  min-height: 300px;
   min-width: 800px;
   position: absolute;
   left: 50%;
@@ -58,7 +58,7 @@ a:hover{
 }
 
 .title_container{
-  width: 500px;
+  width: 100%;
   height: auto;
 }
 
@@ -76,5 +76,17 @@ a:hover{
 }
 
 .rest_image{
-  width: 100px;
+  width: 200px;
+}
+
+.rest_container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.category h1{
+  padding-left: 100px;
+  margin-top:100px;
 }
