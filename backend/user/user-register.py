@@ -131,7 +131,7 @@ def lambda_handler(event, context):
     password = event.get('password')
     
     #converting birthday to the correct format
-    birthday = datetime.strptime(birthday, '%Y-%m-%d')
+    birthday = datetime.strptime(birthday, "%Y-%m-%d")
     birthday = birthday.strftime('%Y-%m-%d %H:%M:%S')
 
     #generating a unique userid
@@ -157,7 +157,7 @@ def lambda_handler(event, context):
 if __name__ == "__main__":
     body = {
         "name": "Prado aqef",
-        "birthday": "2023-12-31",
+        "birthday": "2021-03-01",
         "email": "sum@c8ffof.uk",
         "password": "Pra#dji",
         "confirm_password":"Pra#dji"

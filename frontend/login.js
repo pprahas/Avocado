@@ -8,13 +8,9 @@ function myFunction(e) {
 
   fetch("https://9udp7kgai1.execute-api.us-east-1.amazonaws.com/default/user-login",
   {
-      headers: {
-      //   // 'Accept': 'application/json, text/plain, */*',
-        'Content-type': 'application/json'
-      },
       method: "POST",
       body: JSON.stringify({user_id: user_id, user_password: password})
   })
-  .then(function(res){ console.log(res) })
-  .catch(function(res){ console.log(res) })
+  .then(function(res){ console.log(res.json()) })
+  .catch(function(res){ console.log(res.json()) })
 }

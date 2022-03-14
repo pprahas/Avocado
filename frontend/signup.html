@@ -24,21 +24,25 @@
         </div>
         <div class="login_form">
           <label for="uname">Name</label>
-          <input type="text" placeholder="Name" name="uname" required autocomplete="off">
+          <input type="text" id="name" placeholder="Name" name="uname" required autocomplete="off">
           <label for="email">Email</label>
-          <input type="text" placeholder="Email" name="email" required autocomplete="off">
+          <input type="text" id="email" placeholder="Email" name="email" required autocomplete="off">
           <label for="uname">Birthday</label>
-          <input type="text" placeholder="Birthday" name="birthday" required autocomplete="off">
+          <input type="date" id="birthday" placeholder="Birthday" name="birthday" required autocomplete="off">
           <label for="birthday">Password</label>
-          <input type="text" placeholder="Password" name="uname" required autocomplete="off">
+          <input type="password" id="password" placeholder="Password" name="uname" required autocomplete="off">
           <label for="psw">Confirm Password</label>
-          <input type="password" placeholder="Confirm password" name="psw" required  autocomplete="off">
-          <button type="submit" onclick="login()">Sign Up</button>
+          <input type="password" id="confirmPassword" placeholder="Confirm password" name="psw" required  autocomplete="off">
+          <button id="submitbutton" type="submit">Sign Up</button>
         </div>
         <div class="account">
           <a href="login.html">Log In</a>
         </div>
+        <div id="errors"></div>
       </div>
     </section>
+    
+
+    <script src="signup.js"></script>
   </body>
 </html>

@@ -251,5 +251,11 @@ td:nth-child(3){
 
 .pagelist_container .pagebt_num.on {
   background: #495057;
-  color: white;"
+  color: white;
+}
+
+.error_signup {
+  color: red;
+  font: helvetica;
+  font-size: 13px;
 }
