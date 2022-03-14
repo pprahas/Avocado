@@ -9,6 +9,10 @@ from datetime import date
 from datetime import timedelta
 import random
 import sqlite3
+import boto3
+from PIL import Image
+from io import BytesIO
+import base64
 
 
 MSG_REQUEST_NO_BODY = {"status": 500, "statusText": "Requests has no body.", "body": {}}
@@ -68,15 +72,42 @@ def lambda_handler(event, context):
     rows = connection.execute(sql)
     req_rest = []
 
+    #s3 initialization
+    s3 = boto3.resource('s3')
+    bucket_name = 'avocado-bucket-1'
+
+    #Initializinf stuff for resizing
+    FIXED_WIDTH = 300
+    FIXED_HEIGHT = 200
+    resize = 0.1
+
 
     for row in rows:
+        #getting string to frontend
+        filename = row.filepath_s3
+        s3_object = s3.Bucket(bucket_name).Object(filename).get()
+        encoded_string_to_frontend = base64.b64encode(s3_object['Body'].read())
+
+        #resizing image
+        img = Image.open(BytesIO(base64.b64decode(encoded_string_to_frontend)))
+        resize = FIXED_WIDTH/img.size[0] if (FIXED_WIDTH/img.size[0] > FIXED_HEIGHT/img.size[1]) else FIXED_HEIGHT/img.size[1]
+
+        x = img.size[0]
+        y = img.size[1]
+
+        img = img.resize(( int(x*resize), int(y*resize)),Image.ANTIALIAS)
+
+        buffered = BytesIO()
+        img.save(buffered, format="png")
+        img_str = base64.b64encode(buffered.getvalue())
+
+        #print(img_str)
         req_rest.append(
             {
                 "rest_id": row.rest_id,
                 "rest_name": row.name,
                 "rest_type": row.rest_type,
                 "rating": row.rating,
-                "img_path": row.filepath_s3
             }
         )
 
