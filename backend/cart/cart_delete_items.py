@@ -1,14 +1,14 @@
+from base64 import encode
 import json
 import sqlalchemy as db
-import getDiscount as DC
 
 MSG_REQUEST_NO_BODY = {"status": 500, "statusText": "Requests has no body.", "body": {}}
 MSG_REQUEST_INCORRECT_FORMAT = {"status": 500, "statusText": "Requests incorrect format.", "body": {}}
 MSG_SUCCESS = {"status": 200, "statusText": "User created account successfully.", "body": {}}
 MSG_FAIL_TO_CREATE = {"status": 422, "statusText": "Account creation failed.", "body": {}}
 
-# Establish Connection
-from main import MSG_REQUEST_INCORRECT_FORMAT
+# # Establish Connection
+# from main import MSG_REQUEST_INCORRECT_FORMAT
 
 
 def db_connection():
@@ -33,7 +33,8 @@ def input_checking(func):
 
         """decorator for input checking"""
         try:
-            assert content.get( "user_email" ), "User Email not found"
+            assert content.get( "user_id" ), "User ID not found"
+            assert content.get( "food_id" ), "Food ID not found"
             pass
 
         except Exception as e:
@@ -54,57 +55,16 @@ def lambda_handler(event, context):
     engine = db_connection()
     connection = engine.connect()
 
-    user_email = str(event.get('user_email'))
+    # 0 = In Cart / 1 = Order Received / 2 = On Preparation / 3 = Complete
+    status = 0
+    user_id = int(event.get('user_id'))
+    food_id = int(event.get('food_id'))
 
-    sql = "SELECT user_id FROM user_info WHERE user_email = %s;"
-    value = (user_email)
-    user_id = connection.execute(sql, value).fetchall()
+    sql = "DELETE FROM cart WHERE user_id = %s AND food_id = %s;"
+    value = (user_id, food_id)
 
-
-    if (len(user_id)):
-        user_id = (user_id[0][0])
-    else:
-        user_id = ""
-
-    sql = "SELECT * FROM cart WHERE user_id = %s;"
-    value = (user_id)
-    result = connection.execute(sql, value).fetchall()
-
-    food_list = []
-
-    discount = DC.lambda_handler(event, context)
-    discount_price = 0.0
-    total_price = 0.0
-
-    if (len(discount['body'])):
-        discount_price = discount['body'][0]['price']
-
-    for rows in result:
-        sql = "SELECT filepath_s3 FROM menu_info WHERE food_id = %s;"
-        value = (rows.food_id)
-        food_image = connection.execute(sql, value)
-        image_path = ""
-
-
-        for row in food_image:
-            image_path = row[0]
-
-        food_list.append(
-            {
-                "rest_name": rows.rest_name,
-                "rest_id": rows.rest_id,
-                "food_name": rows.food_name,
-                "price": rows.price * rows.quantity,
-                "quantity": rows.quantity,
-                "img": image_path
-            }
-        )
-        total_price += (rows.price * rows.quantity)
-
-    food_list.append({"discount": discount_price})
-    food_list.append({"total_price": total_price - discount_price})
-
-    MSG_SUCCESS['body'] = food_list
+    connection.execute(sql, value)
+    print("\nSuccessfully deleted {} ordered by {} in the cart\n".format(food_id, user_id))
 
     try:
         return MSG_SUCCESS
@@ -115,7 +75,8 @@ def lambda_handler(event, context):
 
 if __name__ == "__main__":
     body = {
-        "user_email": "davis@purdue.edu"
+        "user_id": "5000",
+        "food_id": "100"
     }
     event = {
         "body": json.dumps(body)
