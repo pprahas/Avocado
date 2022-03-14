@@ -42,3 +42,61 @@ a{
 a:hover{
   color: #ccc;
 }
+
+.table_container{
+  width: 90%;
+  min-height: 100px;
+  min-width: 800px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+table {
+	width: 750px;
+	border-collapse: collapse;
+	margin:50px auto;
+	}
+
+th {
+	background: #588157;
+	color: white;
+	font-weight: bold;
+	}
+
+td, th {
+	padding: 10px;
+	border: 1px solid #ccc;
+	text-align: left;
+	font-size: 18px;
+}
+
+.delete_button{
+  border: 1px black solid;
+  width: 100%;
+  font-weight: bold;
+}
+
+.delete_button:hover{
+  background: white;
+  cursor: pointer;
+}
+
+.totalPrice_container{
+  border-top: 1px black solid;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  position: absolute;
+  width: 90%;
+  min-height: 50px;
+  left: 50%;
+  bottom: 20%;
+  transform: translateX(-50%);
+}
+
+.totalPrice{
+  font-size: 30px;
+  font-weight: bold;
+}
