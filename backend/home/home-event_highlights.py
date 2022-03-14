@@ -113,7 +113,7 @@ def lambda_handler(event, context):
             img.save(buffered, format="png")
             img_str = base64.b64encode(buffered.getvalue())
 
-            #print(img_str)
+            img_str = img_str.decode("utf-8")
 
             rests_disc.append(
                 {
@@ -121,6 +121,7 @@ def lambda_handler(event, context):
                     "rest_name": new_row.name,
                     "rest_type": new_row.rest_type,
                     "rating": new_row.rating,
+                    "image": img_str
                 }
             )
 

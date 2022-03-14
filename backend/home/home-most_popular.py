@@ -100,7 +100,9 @@ def lambda_handler(event, context):
         img.save(buffered, format="png")
         img_str = base64.b64encode(buffered.getvalue())
 
-        #print(img_str)
+        img_str = img_str.decode("utf-8")
+
+        #print(type(img_str))
 
         #getting table of required restaurants
         popular_rest.append(
@@ -110,6 +112,7 @@ def lambda_handler(event, context):
                 "rest_name": row.name,
                 "rest_type": row.rest_type,
                 "rating": row.rating,
+                "image": img_str
             }
         )
 

@@ -101,13 +101,15 @@ def lambda_handler(event, context):
         img.save(buffered, format="png")
         img_str = base64.b64encode(buffered.getvalue())
 
-        #print(img_str)
+        img_str = img_str.decode("utf-8")
+
         req_rest.append(
             {
                 "rest_id": row.rest_id,
                 "rest_name": row.name,
                 "rest_type": row.rest_type,
                 "rating": row.rating,
+                "image": img_str
             }
         )
 
