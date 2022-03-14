@@ -28,7 +28,8 @@ function signup(e) {
     .then((data) => {
         console.log(data);
 
-        if (data.status === 200) {
+        if (data.status === 422) {
+            localStorage.setItem('user_email', email);
             window.location.replace("index.html");
         } else if (data.status === 422) {
             let errors = data.body;

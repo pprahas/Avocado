@@ -9,7 +9,7 @@ import uuid
 MSG_REQUEST_NO_BODY = {"status": 500, "statusText": "Requests has no body.", "body": {}}
 MSG_REQUEST_INCORRECT_FORMAT = {"status": 500, "statusText": "Requests incorrect format.", "body": {}}
 MSG_SUCCESS = {"status": 200, "statusText": "User created account successfully.", "body": {}}
-MSG_NO_FIELDS = {"status": 200, "statusText": "Missing input field.", "body": {}}
+MSG_NO_FIELDS = {"status": 422, "statusText": "Missing input field.", "body": {}}
 MSG_FAIL_TO_CREATE = {"status": 422, "statusText": "The account has not been created.", "body": {}}
 
 
