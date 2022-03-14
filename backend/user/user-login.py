@@ -98,23 +98,18 @@ def lambda_handler(event, context):
     # print(user)
        
     
-    try:
-        # sql = "INSERT INTO user_info(name, user_id, payment_type, birthday, user_email, user_password) VALUES (%s, %s, %s, %s, %s, %s)" 
-        # val = (name, userid, payment, birthday, email, hashed_password)
-        # connection.execute(sql,val);
-        
+    try:  
         return MSG_SUCCESS
 
     except Exception as e:
-        # print("Email is not unique.")
         return MSG_FAIL_TO_CREATE
 
 
 
 if __name__ == "__main__":
     body = {
-        "user_email": "sum@c8o.uk",
-        "user_password": "Prad#ji"
+        "user_email": "sum@c8ffo.uk",
+        "user_password": "Pra#dji"
     }
 
     event = {
