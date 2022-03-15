@@ -59,7 +59,7 @@ fetch('https://bt02rinmvl.execute-api.us-east-1.amazonaws.com/default/cart-disco
             `
             document.getElementById('totalPrice').innerHTML = output;
 
-            if (val.discount_percent !== 0) {
+            if (val.discount_percent != 0 && val.total_price != 0) {
                 let output2 = "";
                 let discounted_price = val.total_price * (val.discount_percent/ 100)
                 discounted_price = Number((discounted_price).toFixed(2));
