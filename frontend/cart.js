@@ -44,8 +44,8 @@ const ele2 = document.getElementById("totalPrice");
 var todayDate = new Date().toISOString().slice(0, 10);
 const data2 = {
     user_email: user_email,
-    date_specified: "2022-03-11"
-    // date_specified: String(todayDate)
+    // date_specified: "2022-03-11"
+    date_specified: String(todayDate)
 };
 
 
