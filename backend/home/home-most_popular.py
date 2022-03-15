@@ -17,9 +17,8 @@ from io import BytesIO
 
 MSG_REQUEST_NO_BODY = {"status": 500, "statusText": "Requests has no body.", "body": {}}
 MSG_REQUEST_INCORRECT_FORMAT = {"status": 500, "statusText": "Requests incorrect format.", "body": {}}
-MSG_SUCCESS = {"status": 200, "statusText": "User created account successfully.", "body": {}}
-MSG_FAIL_TO_CREATE = {"status": 422, "statusText": "Account creation failed.", "body": {}}
-MSG_ORDER_AGAIN_FAIL = {"status": 600, "statusText": "Order again table is unavailable.", "body": {}}
+MSG_SUCCESS = {"status": 200, "statusText": "Get Most Popular Restaurants Successfully.", "body": {}}
+MSG_ORDER_AGAIN_FAIL = {"status": 600, "statusText": "Failed to get Most Popular restaurantse.", "body": {}}
 
 def input_checking( func ):
 
@@ -117,7 +116,8 @@ def lambda_handler(event, context):
         )
 
     try:
-        return popular_rest
+        MSG_SUCCESS['body'] = popular_rest
+        return MSG_SUCCESS
 
     except Exception as e:
         print(e)
