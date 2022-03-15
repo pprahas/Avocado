@@ -16,7 +16,7 @@ fetch('https://3b01ihtpq4.execute-api.us-east-1.amazonaws.com/default/restaurant
         if (data.status == 200) {
             let val = data.body;
             let output = "";
-            
+
             val.forEach(function(menu) {
                 output += `
                 <div id=${menu.food_id} class="menu_container">
@@ -30,7 +30,7 @@ fetch('https://3b01ihtpq4.execute-api.us-east-1.amazonaws.com/default/restaurant
                 <button id=${menu.food_id} class="addToCart" type="submit">Add to Cart</button>
             </div>`
             });
-            
+
             document.getElementById('restaurant_menu').innerHTML = output;
             let btn = document.getElementsByClassName('addToCart');
             // console.log(btn);

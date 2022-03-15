@@ -2,9 +2,6 @@ let user_id = localStorage.getItem("user_email");
 
 function addToCart() {
 
-    // console.log(this);
-    // console.log(user_id);
-    
     const data = {
         user_email: user_id,
         rest_id: rest_id,
@@ -22,4 +19,20 @@ function addToCart() {
             console.log(data.statusText);
         }
     });
+
+    //Update Cart Quantity when pressed!
+    const quantity = document.getElementById("cart_quantity");
+    let count = parseInt(quantity.innerHTML);
+
+    count = count + 1;
+    quantity.innerHTML = count;
+    updateAnimation(quantity, count);
+}
+
+function updateAnimation(quantity, count){
+  if (count % 2) {
+    quantity.style = "background-color: #dc2f02;";
+  } else {
+    quantity.style = "background-color: #606c38;";
+  }
 }

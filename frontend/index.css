@@ -76,7 +76,10 @@ a:hover{
 }
 
 .rest_image{
-  width: 200px;
+  width: 150px;
+  height: 150px;
+  margin: 20px;
+  object-fit: contain;
 }
 
 .rest_container{
