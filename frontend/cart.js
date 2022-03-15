@@ -6,7 +6,7 @@ const data = {
     user_email: user_email
 };
 
-if (user_id == null){
+if (user_email == null){
   console.log("NOT LOGGED IN!");
   window.location = "login.html";
 }
