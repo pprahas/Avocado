@@ -27,28 +27,7 @@
           <th>Price</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td data-column="Restaurant">Panda Express</td>
-          <td data-column="Menu">Orange Chicken</td>
-          <td data-column="Quantity">2</td>
-          <td data-column="Price">$28.30</td>
-          <td><button id="delete_button1" class="delete_button">DELETE</button></td>
-        </tr>
-        <tr>
-          <td data-column="Restaurant">Panda Express</td>
-          <td data-column="Menu">Beijing Beef</td>
-          <td data-column="Quantity">1</td>
-          <td data-column="Price">$13.23</td>
-          <td><button id="delete_button2" class="delete_button">DELETE</button></td>
-        </tr>
-        <tr>
-          <td data-column="Restaurant">Oishi</td>
-          <td data-column="Menu">Spicy Noodles</td>
-          <td data-column="Quantity">1</td>
-          <td data-column="Price">$13.00</td>
-          <td><button id="delete_button3" class="delete_button">DELETE</button></td>
-        </tr>
+      <tbody id="cart_list">
       </tbody>
     </table>
 
@@ -67,7 +46,9 @@
 
   </body>
 
-  <script scr="cart.js">
-
+  <script src="cart.js">
   </script>
-</html>
+  <script src="cartUpdate.js">
+  </script>
+
+  </html>
