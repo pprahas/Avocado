@@ -82,25 +82,25 @@ def lambda_handler(event, context):
 
 
     for row in rows:
-        #getting string to frontend
-        filename = row.filepath_s3
-        s3_object = s3.Bucket(bucket_name).Object(filename).get()
-        encoded_string_to_frontend = base64.b64encode(s3_object['Body'].read())
+        # #getting string to frontend
+        # filename = row.filepath_s3
+        # s3_object = s3.Bucket(bucket_name).Object(filename).get()
+        # encoded_string_to_frontend = base64.b64encode(s3_object['Body'].read())
 
-        #resizing image
-        img = Image.open(BytesIO(base64.b64decode(encoded_string_to_frontend)))
-        resize = FIXED_WIDTH/img.size[0] if (FIXED_WIDTH/img.size[0] > FIXED_HEIGHT/img.size[1]) else FIXED_HEIGHT/img.size[1]
+        # #resizing image
+        # img = Image.open(BytesIO(base64.b64decode(encoded_string_to_frontend)))
+        # resize = FIXED_WIDTH/img.size[0] if (FIXED_WIDTH/img.size[0] > FIXED_HEIGHT/img.size[1]) else FIXED_HEIGHT/img.size[1]
 
-        x = img.size[0]
-        y = img.size[1]
+        # x = img.size[0]
+        # y = img.size[1]
 
-        img = img.resize(( int(x*resize), int(y*resize)),Image.ANTIALIAS)
+        # img = img.resize(( int(x*resize), int(y*resize)),Image.ANTIALIAS)
 
-        buffered = BytesIO()
-        img.save(buffered, format="png")
-        img_str = base64.b64encode(buffered.getvalue())
+        # buffered = BytesIO()
+        # img.save(buffered, format="png")
+        # img_str = base64.b64encode(buffered.getvalue())
 
-        img_str = img_str.decode("utf-8")
+        # img_str = img_str.decode("utf-8")
 
         #print(type(img_str))
 
@@ -112,7 +112,7 @@ def lambda_handler(event, context):
                 "rest_name": row.name,
                 "rest_type": row.rest_type,
                 "rating": row.rating,
-                "image": img_str
+                "image": "https://{}.s3.amazonaws.com/{}".format(bucket_name, row.filepath_s3)
             }
         )
 
