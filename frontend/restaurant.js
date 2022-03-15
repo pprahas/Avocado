@@ -1,7 +1,5 @@
 let rest_id = localStorage.getItem('rest_id');
-
-console.log(localStorage.getItem('rest_id'));
-
+let user_id = localStorage.getItem("user_email");
 const ele = document.getElementById("most_popular");
 
 const data = {
@@ -39,6 +37,28 @@ fetch('https://3b01ihtpq4.execute-api.us-east-1.amazonaws.com/default/restaurant
             }
         }
 });
+
+getCartQuantity();
+
+function getCartQuantity(){
+  const data = {
+      user_email: user_id
+  };
+
+  fetch('https://bo48fcsrp9.execute-api.us-east-1.amazonaws.com/default/cart-show_quantity', {
+  method: 'POST',
+  body: JSON.stringify(data)
+  }).then((res) => res.json())
+  .then((data) => {
+      if (data.status === 200) {
+        let val = data.body;
+        const quantity = document.getElementById("cart_quantity");
+        quantity.innerHTML = val.quantity;
+      } else {
+          console.log(data.statusText);
+      }
+  });
+}
 
 function addToCart() {
 

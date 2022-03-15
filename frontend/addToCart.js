@@ -1,5 +1,3 @@
-let user_id = localStorage.getItem("user_email");
-
 function addToCart() {
 
     const data = {
@@ -20,13 +18,16 @@ function addToCart() {
         }
     });
 
-    //Update Cart Quantity when pressed!
-    const quantity = document.getElementById("cart_quantity");
-    let count = parseInt(quantity.innerHTML);
+    updateCartQuantity();
+}
 
-    count = count + 1;
-    quantity.innerHTML = count;
-    updateAnimation(quantity, count);
+function updateCartQuantity(){
+  const quantity = document.getElementById("cart_quantity");
+  let count = parseInt(quantity.innerHTML);
+  count = count + 1;
+  quantity.innerHTML = count;
+
+  updateAnimation(quantity, count);
 }
 
 function updateAnimation(quantity, count){

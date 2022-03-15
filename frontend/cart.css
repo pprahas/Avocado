@@ -59,9 +59,9 @@ table {
 	}
 
 th {
-	background: #588157;
+	background: #606c38;
 	color: white;
-	font-weight: bold;
+  font-weight: normal;
 	}
 
 td, th {
@@ -92,11 +92,51 @@ td, th {
   width: 90%;
   min-height: 50px;
   left: 50%;
-  bottom: 20%;
+  bottom: 30%;
   transform: translateX(-50%);
 }
 
 .totalPrice{
   font-size: 30px;
-  font-weight: bold;
+}
+
+.discount_container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  position: absolute;
+  color: red;
+  width: 90%;
+  min-height: 50px;
+  left: 50%;
+  bottom: 40%;
+  transform: translateX(-50%);
+  font-size: 20px;
+}
+
+.discountPrice{
+  font-size: 30px;
+}
+
+#submit_order {
+  width: 30%;
+  padding: 10px;
+  background: #495057;
+  color: white;
+  font-size: 20px;
+  border: 1px solid #495057;
+  cursor: pointer;
+  margin-bottom: 20px;
+
+  position:absolute;
+  left: 50%;
+  bottom: 10%;
+  transform: translateX(-50%);
+}
+
+#submit_order:hover{
+  background-color: #f8f9fa;
+  color: black;
+  transition: all 0.2s ease-in;
 }
