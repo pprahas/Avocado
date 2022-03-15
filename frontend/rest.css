@@ -86,3 +86,15 @@ button {
 button:hover {
   background: grey;
 }
+
+.cart_quantity{
+  display: inline-block;
+  text-align: center;
+  margin-left: 5px;
+  color: white;
+  width: 20px;
+  height: 100%;
+  background-color: #283618;
+  border-radius: 70px;
+  transition: background-color 0.5s ease-in;
+}
