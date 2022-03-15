@@ -1,6 +1,5 @@
 import json
 import sqlalchemy as db
-import importlib
 import cart_discount as DC
 
 MSG_REQUEST_NO_BODY = {"status": 500, "statusText": "Requests has no body.", "body": {}}
@@ -95,15 +94,16 @@ def lambda_handler(event, context):
                 "rest_name": rows.rest_name,
                 "rest_id": rows.rest_id,
                 "food_name": rows.food_name,
-                "price": rows.price * rows.quantity,
+                "food_id": rows.food_id,
+                "price": rows.price,
                 "quantity": rows.quantity,
                 "img": image_path
             }
         )
         total_price += (rows.price * rows.quantity)
 
-    food_list.append({"discount": discount_price})
-    food_list.append({"total_price": total_price - discount_price})
+    # food_list.append({"discount": discount_price})
+    # food_list.append({"total_price": total_price - discount_price})
 
     MSG_SUCCESS['body'] = food_list
 

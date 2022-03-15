@@ -31,7 +31,6 @@ def input_checking(func):
         """decorator for input checking"""
         try:
             assert content.get( "user_email" ), "User Email not found"
-            assert content.get( "date_specified" ), "Date specified not found"
 
         except Exception as e:
             # return data
@@ -53,7 +52,6 @@ def lambda_handler(event, context):
 
     # Get User ID from User Email
     user_email = str(event.get('user_email'))
-    date_specified = event.get('date_specified')
 
     sql = "SELECT user_id FROM user_info WHERE user_email = %s;"
     value = (user_email)
@@ -65,20 +63,14 @@ def lambda_handler(event, context):
         return MSG_INVALID_ID
 
     try:
-        sql = "SELECT * FROM events WHERE date = %s;"
-        value = (date_specified)
-        discount = connection.execute(sql, value).fetchone()
-
-        sql = """SELECT sum(quantity*price) as sum_price FROM cart 
+        sql = """SELECT sum(quantity) as total_quantity FROM cart 
                 where user_id = %s;
         """
         value = (user_id)
         result = connection.execute(sql, value).fetchone()
 
         MSG_SUCCESS['body'] = {
-            "discount_name": discount.event_name,
-            "discount_percent": discount.discount_amount,
-            "total_price": result.sum_price * ((100 - discount.discount_amount)/100)
+            "quantity": int(result.total_quantity)
         }
 
         return MSG_SUCCESS
@@ -90,7 +82,6 @@ def lambda_handler(event, context):
 if __name__ == "__main__":
     body = {
         "user_email": "munhong@gmail.com",
-        "date_specified": "2022-03-11"
     }
     event = {
         "body": json.dumps(body)
