@@ -23,7 +23,7 @@ function myFunction(e) {
           let output = "";
           output += `
           <div class="error_signup">
-              <li>${data.body}</li>
+              <li>${data.statusText}</li>
           </div>
           `
           document.getElementById('errors').innerHTML = output;

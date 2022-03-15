@@ -1,15 +1,15 @@
 let user_email = localStorage.getItem("user_email");
 
-if (user_id == null){
-  console.log("NOT LOGGED IN!");
-  window.location = "login.html";
-}
-
 const ele = document.getElementById("cart_list");
 
 const data = {
     user_email: user_email
 };
+
+if (user_id == null){
+  console.log("NOT LOGGED IN!");
+  window.location = "login.html";
+}
 
 fetch('https://q6y9jbmbwl.execute-api.us-east-1.amazonaws.com/default/cart-list_of_items', {
     method: 'POST',
@@ -40,10 +40,15 @@ fetch('https://q6y9jbmbwl.execute-api.us-east-1.amazonaws.com/default/cart-list_
 });
 
 const ele2 = document.getElementById("totalPrice");
+
+var todayDate = new Date().toISOString().slice(0, 10);
 const data2 = {
     user_email: user_email,
     date_specified: "2022-03-11"
+    // date_specified: String(todayDate)
 };
+
+
 
 fetch('https://bt02rinmvl.execute-api.us-east-1.amazonaws.com/default/cart-discount', {
     method: 'POST',
@@ -55,9 +60,21 @@ fetch('https://bt02rinmvl.execute-api.us-east-1.amazonaws.com/default/cart-disco
             let output = "";
             output += `
             <div>TOTAL PRICE</div>
-            <div class="totalPrice">$${val.total_price}</div>
+            <div class="totalPrice">$${Number((val.total_price).toFixed(2))}</div>
             `
             document.getElementById('totalPrice').innerHTML = output;
+
+            if (val.discount_percent != 0 && val.total_price != 0) {
+                let output2 = "";
+                let discounted_price = val.total_price * (val.discount_percent/ 100)
+                discounted_price = Number((discounted_price).toFixed(2));
+                output2 = `
+                <div>${val.discount_name} discount</div>
+                <div class="discountPrice">- $${discounted_price}</div>
+                `
+                document.getElementById('discount').innerHTML = output2;
+            }
+
         } else {
             console.log(data.statusText);
         }
