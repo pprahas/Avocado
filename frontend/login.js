@@ -17,7 +17,7 @@ function myFunction(e) {
 
       if (data.status === 200) {
           localStorage.setItem('user_email', user_email);
-          window.location.replace("index.html");
+          window.location = 'index.html';
       } else if (data.status === 422) {
           let errors = data.body;
           let output = "";

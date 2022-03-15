@@ -1,5 +1,15 @@
 
-console.log(localStorage.getItem("user_email"));
+const user_email = localStorage.getItem("user_email")
+const account = document.getElementById("account");
+
+if (user_email == null){
+  console.log("NOT LOGGED IN!");
+  account.innerHTML = 'Log-In';
+} else {
+  console.log("LOGGED IN!");
+  account.innerHTML = user_email;
+  account.href = "signout.html";
+}
 
 const ele = document.getElementById("most_popular");
 
@@ -23,7 +33,7 @@ fetch('https://5kwlyceua3.execute-api.us-east-1.amazonaws.com/default/home-most_
                 ${restaurant.rest_name}
             </div>`
         });
-        
+
         document.getElementById('most_popular').innerHTML = output;
         let btn = document.getElementsByClassName('rest_link');
         // console.log(btn);

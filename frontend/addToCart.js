@@ -1,5 +1,10 @@
 function addToCart() {
 
+  if (user_id == null){
+    console.log("NOT LOGGED IN!");
+    window.location = "login.html";
+  }
+
     const data = {
         user_email: user_id,
         rest_id: rest_id,

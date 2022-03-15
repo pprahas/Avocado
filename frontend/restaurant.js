@@ -38,7 +38,12 @@ fetch('https://3b01ihtpq4.execute-api.us-east-1.amazonaws.com/default/restaurant
         }
 });
 
-getCartQuantity();
+if (user_id == null){
+  console.log("NOT LOGGED IN!");
+} else {
+  console.log("LOGGED IN!");
+  getCartQuantity();
+}
 
 function getCartQuantity(){
   const data = {

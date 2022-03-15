@@ -1,9 +1,14 @@
 let user_email = localStorage.getItem("user_email");
 
+if (user_id == null){
+  console.log("NOT LOGGED IN!");
+  window.location = "login.html";
+}
+
 const ele = document.getElementById("cart_list");
 
 const data = {
-    user_email: user_email 
+    user_email: user_email
 };
 
 fetch('https://q6y9jbmbwl.execute-api.us-east-1.amazonaws.com/default/cart-list_of_items', {
@@ -14,7 +19,7 @@ fetch('https://q6y9jbmbwl.execute-api.us-east-1.amazonaws.com/default/cart-list_
         if (data.status == 200) {
             let val = data.body;
             let output = "";
-            
+
             val.forEach(function(cart) {
                 output += `
                 <tr class="cart-items">
@@ -46,7 +51,7 @@ fetch('https://bt02rinmvl.execute-api.us-east-1.amazonaws.com/default/cart-disco
     }).then((res) => res.json())
     .then((data) => {
         if (data.status == 200) {
-            let val = data.body;            
+            let val = data.body;
             let output = "";
             output += `
             <div>TOTAL PRICE</div>
