@@ -64,33 +64,37 @@ def lambda_handler(event, context):
     else:
         return MSG_INVALID_ID
 
-    try:
-        sql = "SELECT * FROM events WHERE date = %s;"
-        value = (date_specified)
-        discount = connection.execute(sql, value).fetchone()
+    # try:
+    sql = "SELECT * FROM events WHERE date = %s;"
+    value = (date_specified)
+    discount = connection.execute(sql, value).fetchone()
 
-        sql = """SELECT sum(quantity*price) as sum_price FROM cart 
-                where user_id = %s;
-        """
-        value = (user_id)
-        result = connection.execute(sql, value).fetchone()
+    sql = """SELECT sum(quantity*price) as sum_price FROM cart 
+            where user_id = %s;
+    """
+    value = (user_id)
+    result = connection.execute(sql, value).fetchone()
+    
+    event_name = discount.event_name if discount else "",
+    discount_amount = discount.discount_amount if discount else 0,
+    total_price = result.sum_price if result.sum_price else 0,
 
-        MSG_SUCCESS['body'] = {
-            "discount_name": discount.event_name,
-            "discount_percent": discount.discount_amount,
-            "total_price": result.sum_price * ((100 - discount.discount_amount)/100)
-        }
+    MSG_SUCCESS['body'] = {
+        "discount_name": event_name[0],
+        "discount_percent": discount_amount[0],
+        "total_price": total_price[0] * ((100 - discount_amount[0])/100)
+    }
 
-        return MSG_SUCCESS
-    except Exception as e:
-        print(e)
-        return MSG_FAIL_TO_CREATE
+    return MSG_SUCCESS
+    # except Exception as e:
+    #     print(e)
+    #     return MSG_FAIL_TO_CREATE
 
 
 if __name__ == "__main__":
     body = {
         "user_email": "munhong@gmail.com",
-        "date_specified": "2022-03-11"
+        "date_specified": "2022-03-15"
     }
     event = {
         "body": json.dumps(body)
