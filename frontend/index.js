@@ -16,26 +16,19 @@ fetch('https://5kwlyceua3.execute-api.us-east-1.amazonaws.com/default/home-most_
         let val = data.body;
         let output = "";
         val.forEach(function(restaurant) {
-            // console.log(restaurant.image);
-            // output += `
-            // <div>
-            // <p>Some</p>
-            //     <img src="data:image/png;base64, ${restaurant.image}" alt="Red dot" />
-            // </div>
-            // `
-            // output += `
-            // <div class="rest_container">
-            //     <a class="rest_link" href="rest_pandaexpress.html"><img class="rest_image "src="data:image/png;base64, ${restaurant.image}" alt="Red dot" /></a>
-            //     ${restaurant.rest_name}
-            // </div>
-            // `
             output += `
             <div class="rest_container">
-                <a class="rest_link" href="rest_pandaexpress.html"><img class="rest_image "src=${restaurant.image} alt="Red dot" /></a>
+                <a id=${restaurant.rest_id} class="rest_link" href="restaurant.html"><img class="rest_image" src=${restaurant.image}
+                 alt="Red dot" /></a>
                 ${restaurant.rest_name}
             </div>`
         });
-
+        
         document.getElementById('most_popular').innerHTML = output;
+        let btn = document.getElementsByClassName('rest_link');
+        // console.log(btn);
+        for (var i = 0; i < btn.length; i++) {
+            btn[i].addEventListener('click', clickFunc);
+        }
     }
 })

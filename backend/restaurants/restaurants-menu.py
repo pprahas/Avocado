@@ -71,7 +71,8 @@ def lambda_handler(event, context):
                 "food_id": food.food_id,
                 "food_name": food.food_name,
                 "price" : food.price,
-                "rating" : food.rating
+                "rating" : food.rating,
+                "image": food.filepath_s3
             }
         )
     #

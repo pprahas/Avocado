@@ -1,8 +1,7 @@
 
 const ele = document.getElementById("submitbutton");
 
-ele.addEventListener
-('click', signup);
+ele.addEventListener('click', signup);
 
 function signup(e) {
     e.preventDefault();
