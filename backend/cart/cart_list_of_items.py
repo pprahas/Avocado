@@ -79,6 +79,7 @@ def lambda_handler(event, context):
     if (len(discount['body'])):
         discount_price = discount['body'][0]['price']
 
+    
     for rows in result:
         sql = "SELECT filepath_s3 FROM menu_info WHERE food_id = %s;"
         value = (rows.food_id)
@@ -89,6 +90,7 @@ def lambda_handler(event, context):
         for row in food_image:
             image_path = row[0]
 
+
         food_list.append(
             {
                 "rest_name": rows.rest_name,
@@ -98,6 +100,7 @@ def lambda_handler(event, context):
                 "price": rows.price,
                 "quantity": rows.quantity,
                 "img": image_path
+                # "image": "https://{}.s3.amazonaws.com/{}".format(bucket_name, row.filepath_s3)
             }
         )
         total_price += (rows.price * rows.quantity)

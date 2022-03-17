@@ -61,20 +61,25 @@ def lambda_handler(event, context):
     val  = rest_id
     result = connection.execute(sql, val).fetchall()
    
-   
+    bucket_name = 'avocado-bucket-1'
 
     result_list = []
 
+    counter = 0
     for food in result:
+        if counter == 4:
+            break
         result_list.append(
             {
                 "food_id": food.food_id,
                 "food_name": food.food_name,
                 "price" : food.price,
                 "rating" : food.rating,
-                "image": food.filepath_s3
+                # "image": food.filepath_s3,
+                "image": "https://{}.s3.amazonaws.com/{}".format(bucket_name, food.filepath_s3)
             }
         )
+        counter += 1
     #
     # for res in result_list:
     #     print(res)
