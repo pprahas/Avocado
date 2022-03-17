@@ -79,10 +79,8 @@ def lambda_handler(event, context):
                 "image": "https://{}.s3.amazonaws.com/{}".format(bucket_name, food.filepath_s3)
             }
         )
+
         counter += 1
-    #
-    # for res in result_list:
-    #     print(res)
 
     MSG_SUCCESS['body'] = result_list
        
