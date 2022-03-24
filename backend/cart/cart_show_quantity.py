@@ -4,8 +4,8 @@ import datetime
 
 MSG_REQUEST_NO_BODY = {"status": 500, "statusText": "Requests has no body.", "body": {}}
 MSG_REQUEST_INCORRECT_FORMAT = {"status": 500, "statusText": "Requests incorrect format.", "body": {}}
-MSG_SUCCESS = {"status": 200, "statusText": "Discount applied.", "body": {}}
-MSG_FAIL_TO_CREATE = {"status": 422, "statusText": "Discount Applied Failed.", "body": {}}
+MSG_SUCCESS = {"status": 200, "statusText": "Show quantity success.", "body": {}}
+MSG_SHOW_FAILURE = {"status": 422, "statusText": "Show quantity Failed.", "body": {}}
 MSG_INVALID_ID = {"status": 422, "statusText": "Invalid ID.", "body": {}}
 
 def db_connection():
@@ -63,20 +63,22 @@ def lambda_handler(event, context):
         return MSG_INVALID_ID
 
     try:
-        sql = """SELECT sum(quantity) as total_quantity FROM cart 
-                where user_id = %s;
+        sql = """SELECT sum(quantity) as total_quantity FROM cart
+                where user_id = %s and order_number = 0;
         """
         value = (user_id)
         result = connection.execute(sql, value).fetchone()
 
+        result = result.total_quantity if result.total_quantity else 0
+        
         MSG_SUCCESS['body'] = {
-            "quantity": int(result.total_quantity)
+            "quantity": int(result)
         }
 
         return MSG_SUCCESS
     except Exception as e:
         print(e)
-        return MSG_FAIL_TO_CREATE
+        return MSG_SHOW_FAILURE
 
 
 if __name__ == "__main__":

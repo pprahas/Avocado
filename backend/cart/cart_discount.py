@@ -70,7 +70,7 @@ def lambda_handler(event, context):
     discount = connection.execute(sql, value).fetchone()
 
     sql = """SELECT sum(quantity*price) as sum_price FROM cart 
-            where user_id = %s;
+            where user_id = %s and order_number = 0;
     """
     value = (user_id)
     result = connection.execute(sql, value).fetchone()

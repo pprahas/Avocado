@@ -1,15 +1,11 @@
 import json
 import sqlalchemy as db
-import cart_discount as DC
 
 MSG_REQUEST_NO_BODY = {"status": 500, "statusText": "Requests has no body.", "body": {}}
 MSG_REQUEST_INCORRECT_FORMAT = {"status": 500, "statusText": "Requests incorrect format.", "body": {}}
 MSG_SUCCESS = {"status": 200, "statusText": "Cart return successfully.", "body": {}}
 MSG_FAIL_RETURN_CART = {"status": 422, "statusText": "Cart return failed.", "body": {}}
 MSG_USER_NOT_EXIST = {"status": 422, "statusText": "User does not exist.", "body": {}}
-
-# # Establish Connection
-# from main import MSG_REQUEST_INCORRECT_FORMAT
 
 
 def db_connection():
@@ -66,28 +62,20 @@ def lambda_handler(event, context):
     else:
         return MSG_USER_NOT_EXIST
 
-    sql = "SELECT * FROM cart WHERE user_id = %s;"
+    sql = "SELECT * FROM cart WHERE user_id = %s and order_number = 0;"
     value = (user_id)
     result = connection.execute(sql, value).fetchall()
 
     food_list = []
-
-    discount = DC.lambda_handler(event, context)
-    discount_price = 0.0
-    total_price = 0.0
-
-    if (len(discount['body'])):
-        discount_price = discount['body'][0]['price']
-
+    
     for rows in result:
+        # if order has been placed don't display
+        if rows.order_number != 0:
+            continue
+
         sql = "SELECT filepath_s3 FROM menu_info WHERE food_id = %s;"
         value = (rows.food_id)
-        food_image = connection.execute(sql, value)
-        image_path = ""
-
-
-        for row in food_image:
-            image_path = row[0]
+        food_image = connection.execute(sql, value).fetchone()
 
         food_list.append(
             {
@@ -97,13 +85,10 @@ def lambda_handler(event, context):
                 "food_id": rows.food_id,
                 "price": rows.price,
                 "quantity": rows.quantity,
-                "img": image_path
+                "img": food_image.filepath_s3
+                # "image": "https://{}.s3.amazonaws.com/{}".format(bucket_name, row.filepath_s3)
             }
         )
-        total_price += (rows.price * rows.quantity)
-
-    # food_list.append({"discount": discount_price})
-    # food_list.append({"total_price": total_price - discount_price})
 
     MSG_SUCCESS['body'] = food_list
 
@@ -117,7 +102,7 @@ def lambda_handler(event, context):
 if __name__ == "__main__":
     body = {
         # "user_email": "davis@purdue.edu"
-        "user_email": "pfjbhbb@gailll.com"
+        "user_email": "munhong@gmail.com"
     }
     event = {
         "body": json.dumps(body)

@@ -6,6 +6,7 @@ const data = {
     rest_id: rest_id
 };
 
+    
 fetch('https://3b01ihtpq4.execute-api.us-east-1.amazonaws.com/default/restaurants-menu', {
     method: 'POST',
     body: JSON.stringify(data)
