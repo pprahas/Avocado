@@ -2,16 +2,12 @@ import uuid
 import json
 import sqlalchemy as db
 from datetime import date
-import cart_list_of_items as Cart
 
 MSG_REQUEST_NO_BODY = {"status": 500, "statusText": "Requests has no body.", "body": {}}
 MSG_REQUEST_INCORRECT_FORMAT = {"status": 500, "statusText": "Requests incorrect format.", "body": {}}
 MSG_SUCCESS = {"status": 200, "statusText": "Submit order successfully.", "body": {}}
 MSG_FAIL_TO_CREATE = {"status": 422, "statusText": "Submit order failed.", "body": {}}
 MSG_USER_NOT_EXIST = {"status": 422, "statusText": "User does not exist.", "body": {}}
-
-# # Establish Connection
-# from main import MSG_REQUEST_INCORRECT_FORMAT
 
 
 def db_connection():
@@ -63,7 +59,13 @@ def lambda_handler(event, context):
 
     today = date.today()
     status = 1
-    order_number = uuid.uuid4().int % 2147483647
+
+    # fail safe id
+    order_number = 0
+    for i in range(3):
+        order_number = uuid.uuid4().int % 2147483647
+        if order_number != 0:
+            break
 
     sql = "SELECT user_id FROM user_info WHERE user_email = %s;"
     value = (user_email)
@@ -74,7 +76,7 @@ def lambda_handler(event, context):
     else:
         return MSG_USER_NOT_EXIST
 
-    sql = "SELECT * FROM cart WHERE user_id = %s;"
+    sql = "SELECT * FROM cart WHERE user_id = %s and order_number = 0;"
     value = (user_id)
     result = connection.execute(sql, value).fetchall()
 
@@ -92,7 +94,7 @@ def lambda_handler(event, context):
             rest_id_list.append(cart_item.rest_id)
 
         # delete from cart
-        sql = "UPDATE cart set order_number = %s WHERE user_id = %s and rest_id = %s and food_id = %s"
+        sql = "UPDATE cart set order_number = %s WHERE user_id = %s and rest_id = %s and food_id = %s and order_number = 0"
         value = (order_number, cart_item.user_id, cart_item.rest_id, cart_item.food_id)
         connection.execute(sql, value)
     

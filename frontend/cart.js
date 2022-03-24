@@ -2,6 +2,8 @@ let user_email = localStorage.getItem("user_email");
 
 const ele = document.getElementById("cart_list");
 
+let cart_list;
+
 const data = {
     user_email: user_email
 };
@@ -18,10 +20,10 @@ async function displaycart() {
         }).then((res) => res.json())
         .then((data) => {
             if (data.status == 200) {
-                let val = data.body;
+                cart_list = data.body;
                 let output = "";
     
-                val.forEach(function(cart) {
+                cart_list.forEach(function(cart) {
                     output += `
                     <tr id="${cart.rest_id}+${cart.food_id}+cart-items" class="cart-items">
                         <td id=${cart.rest_id} data-column="Restaurant">${cart.rest_name}</td>

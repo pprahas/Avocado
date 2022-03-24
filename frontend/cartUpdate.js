@@ -1,16 +1,28 @@
 
-// var carts = [].slice.call(document.querySelectorAll('cart_list'), 0)
-
-// function cartItems(cart) {
-//     // console.log(event.target.id);
-//     console.log(carts.indexOf(cart));
-// }
-
 const element = document.getElementById("submit_order");
 element.addEventListener("click", submitOrder);
 
 function submitOrder() {
-    
+    fetch("https://sdjarg81za.execute-api.us-east-1.amazonaws.com/default/cart-submit_order",
+    {
+        method: "POST",
+        body: JSON.stringify({user_email: user_email, options: "1"})
+    })
+    .then((res) => res.json())
+    .then((data) => {
+        console.log(data);
+
+        if (data.status === 200) {
+            console.log(cart_list);
+            // use this poulate the html in cofirmation page
+            
+            // window.location = 'confirmationPage.html';
+
+        } else {
+            console.log(data.statusText);
+        }
+    })
+
 }
 
 
