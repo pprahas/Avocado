@@ -3,6 +3,10 @@ const element = document.getElementById("submit_order");
 element.addEventListener("click", submitOrder);
 
 function submitOrder() {
+  if (cart_list.length == 0){
+    console.log("Empty Cart");
+    return;
+  }
     fetch("https://sdjarg81za.execute-api.us-east-1.amazonaws.com/default/cart-submit_order",
     {
         method: "POST",
@@ -22,7 +26,6 @@ function submitOrder() {
             console.log(data.statusText);
         }
     })
-
 }
 
 
