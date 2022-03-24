@@ -69,8 +69,8 @@ def lambda_handler(event, context):
         value = (user_id)
         result = connection.execute(sql, value).fetchone()
 
-        result = result.total_quantity if result else 0
-
+        result = result.total_quantity if result.total_quantity else 0
+        
         MSG_SUCCESS['body'] = {
             "quantity": int(result)
         }
