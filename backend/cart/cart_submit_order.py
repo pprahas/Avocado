@@ -1,14 +1,4 @@
 import sqlalchemy as db
-<<<<<<< HEAD
-import json
-
-MSG_REQUEST_NO_BODY = {"status": 500, "statusText": "Requests has no body.", "body": {}}
-MSG_REQUEST_INCORRECT_FORMAT = {"status": 500, "statusText": "Requests incorrect format.", "body": {}}
-MSG_ADD_SUCCESS = {"status": 200, "statusText": "The item has been added into cart successfully.", "body": {}}
-MSG_UPDATE_SUCCESS = {"status": 200, "statusText": "Quantity updated in cart successfully.", "body": {}}
-MSG_ID_NOT_FOUND = {"status": 422, "statusText": "User ID not found.", "body": {}}
-MSG_FAIL_TO_CREATE = {"status": 422, "statusText": "Add to cart failed.", "body": {}}
-=======
 from datetime import date
 
 MSG_REQUEST_NO_BODY = {"status": 500, "statusText": "Requests has no body.", "body": {}}
@@ -16,7 +6,6 @@ MSG_REQUEST_INCORRECT_FORMAT = {"status": 500, "statusText": "Requests incorrect
 MSG_SUCCESS = {"status": 200, "statusText": "Submit order successfully.", "body": {}}
 MSG_FAIL_TO_CREATE = {"status": 422, "statusText": "Submit order failed.", "body": {}}
 MSG_USER_NOT_EXIST = {"status": 422, "statusText": "User does not exist.", "body": {}}
->>>>>>> a627c5692572f0fa2755c73bfb86d01b90e70d58
 
 
 def input_checking(func):
@@ -28,16 +17,8 @@ def input_checking(func):
 
         """decorator for input checking"""
         try:
-<<<<<<< HEAD
-            # assert content.get( "firstName" ), "First Name not found"
-            # assert content.get( "lastName" ), "Last Name not found"
-            # assert content.get( "email" ), "Email not found."
-            # assert content.get( "birthday" ), "Birthday not found."
-            # assert content.get( "password" ), "Password not found."
-=======
             assert content.get( "user_email" ), "User ID not found"
             assert content.get( "options" ), "Option not found"
->>>>>>> a627c5692572f0fa2755c73bfb86d01b90e70d58
             pass
 
         except Exception as e:
@@ -80,29 +61,6 @@ def lambda_handler(event, context):
     val = user_email
     user_id = connection.execute(sql, val).fetchone()
 
-<<<<<<< HEAD
-    if not user_id:
-        return MSG_ID_NOT_FOUND
-
-    user_id = user_id.user_id
-
-    rest_sql = "SELECT * FROM rest_info WHERE rest_id = %s;"
-    val = (rest_id)
-    restaurant = connection.execute(rest_sql, val).fetchone()
-
-    menu_sql = "SELECT * FROM menu_info WHERE rest_id = %s AND food_id = %s;"
-    val = (rest_id, food_id)
-    food = connection.execute(menu_sql, val).fetchone()
-
-    # saving cart row
-    # check if menu already exist in cart
-    cart_checking_sql = "SELECT * FROM cart WHERE user_id = '" + str(user_id) + "' AND food_id = " + str(food_id) + ";"
-    # val3 = (user_id, food_id)
-
-    order = connection.execute(cart_checking_sql).fetchall()
-
-    # 이 트라이는 항상 있어야 함
-=======
     user_email = event.get('user_email')
     option = int(event.get('options'))
 
@@ -147,7 +105,6 @@ def lambda_handler(event, context):
         value = (order_number, cart_item.user_id, cart_item.rest_id, cart_item.food_id)
         connection.execute(sql, value)
     
->>>>>>> a627c5692572f0fa2755c73bfb86d01b90e70d58
     try:
         if not (order):
             print('okay')
@@ -173,14 +130,8 @@ def lambda_handler(event, context):
 
 if __name__ == "__main__":
     body = {
-<<<<<<< HEAD
-        "user_email": "sum@c8o.uk",
-        "rest_id": "1000",
-        "food_id": "1003"
-=======
         "user_email": "munhong@gmail.com",
         "options": "1"
->>>>>>> a627c5692572f0fa2755c73bfb86d01b90e70d58
     }
 
     event = {
