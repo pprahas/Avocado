@@ -71,7 +71,7 @@ def lambda_handler(event, context):
 
 
     try:
-        sql = "DELETE FROM cart WHERE user_id = %s AND food_id = %s;"
+        sql = "DELETE FROM cart WHERE user_id = %s AND food_id = %s AND order_number = 0;"
         value = (user_id, food_id)
 
         connection.execute(sql, value)

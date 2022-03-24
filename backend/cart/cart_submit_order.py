@@ -6,8 +6,9 @@ import cart_list_of_items as Cart
 
 MSG_REQUEST_NO_BODY = {"status": 500, "statusText": "Requests has no body.", "body": {}}
 MSG_REQUEST_INCORRECT_FORMAT = {"status": 500, "statusText": "Requests incorrect format.", "body": {}}
-MSG_SUCCESS = {"status": 200, "statusText": "User created account successfully.", "body": {}}
-MSG_FAIL_TO_CREATE = {"status": 422, "statusText": "Account creation failed.", "body": {}}
+MSG_SUCCESS = {"status": 200, "statusText": "Submit order successfully.", "body": {}}
+MSG_FAIL_TO_CREATE = {"status": 422, "statusText": "Submit order failed.", "body": {}}
+MSG_USER_NOT_EXIST = {"status": 422, "statusText": "User does not exist.", "body": {}}
 
 # # Establish Connection
 # from main import MSG_REQUEST_INCORRECT_FORMAT
@@ -35,7 +36,7 @@ def input_checking(func):
 
         """decorator for input checking"""
         try:
-            assert content.get( "user_id" ), "User ID not found"
+            assert content.get( "user_email" ), "User ID not found"
             assert content.get( "options" ), "Option not found"
             pass
 
@@ -57,23 +58,44 @@ def lambda_handler(event, context):
     engine = db_connection()
     connection = engine.connect()
 
-    user_id = int(event.get('user_id'))
+    user_email = event.get('user_email')
     option = int(event.get('options'))
 
     today = date.today()
     status = 1
     order_number = uuid.uuid4().int % 2147483647
 
-    cart = Cart.lambda_handler(event, context)
+    sql = "SELECT user_id FROM user_info WHERE user_email = %s;"
+    value = (user_email)
+    user_id = connection.execute(sql, value).fetchone()
+    
+    if (len(user_id)):
+        user_id = user_id.user_id
+    else:
+        return MSG_USER_NOT_EXIST
 
-    print(cart['body'])
+    sql = "SELECT * FROM cart WHERE user_id = %s;"
+    value = (user_id)
+    result = connection.execute(sql, value).fetchall()
 
-    # sql = "INSERT INTO order_history(order_number, user_id, rest_id, price, options, status, order_date) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-    # value = (order_number, user_id, rest_id, price, option, status, today)
 
-    # connection.execute(sql, value)
-    print("\nSuccessfully submited order\n")
+    rest_id_list = []
 
+    for cart_item in result:
+        print(cart_item)
+        if cart_item.rest_id not in rest_id_list:
+            # insert in order history
+            sql = "INSERT INTO order_history(order_number, user_id, rest_id, price, options, status, order_date) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            value = (order_number, cart_item.user_id, cart_item.rest_id, cart_item.price, option, status, today)
+            connection.execute(sql, value)
+
+            rest_id_list.append(cart_item.rest_id)
+
+        # delete from cart
+        sql = "UPDATE cart set order_number = %s WHERE user_id = %s and rest_id = %s and food_id = %s"
+        value = (order_number, cart_item.user_id, cart_item.rest_id, cart_item.food_id)
+        connection.execute(sql, value)
+    
     try:
         return MSG_SUCCESS
     except Exception as e:
@@ -83,7 +105,7 @@ def lambda_handler(event, context):
 
 if __name__ == "__main__":
     body = {
-        "user_id": "5000",
+        "user_email": "munhong@gmail.com",
         "options": "1"
     }
     event = {

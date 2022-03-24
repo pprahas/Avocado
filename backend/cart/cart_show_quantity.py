@@ -63,8 +63,8 @@ def lambda_handler(event, context):
         return MSG_INVALID_ID
 
     try:
-        sql = """SELECT sum(quantity) as total_quantity FROM cart 
-                where user_id = %s;
+        sql = """SELECT sum(quantity) as total_quantity FROM cart
+                where user_id = %s and order_number = 0;
         """
         value = (user_id)
         result = connection.execute(sql, value).fetchone()

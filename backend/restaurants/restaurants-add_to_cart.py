@@ -69,42 +69,46 @@ def lambda_handler(event, context):
 
     user_id = user_id.user_id
 
-    rest_sql = "SELECT * FROM rest_info WHERE rest_id = %s;"
-    val = (rest_id)
-    restaurant = connection.execute(rest_sql, val).fetchone()
 
-    menu_sql = "SELECT * FROM menu_info WHERE rest_id = %s AND food_id = %s;"
-    val = (rest_id, food_id)
-    food = connection.execute(menu_sql, val).fetchone()
-    
-    #saving cart row
-    #check if menu already exist in cart
-    cart_checking_sql = "SELECT * FROM cart WHERE user_id = '" + str(user_id) +"' AND food_id = " +str(food_id)+";"
-    #val3 = (user_id, food_id)
-    
-    order = connection.execute(cart_checking_sql).fetchall()
-       
-    #이 트라이는 항상 있어야 함
     try:
+        rest_sql = "SELECT * FROM rest_info WHERE rest_id = %s;"
+        val = (rest_id)
+        restaurant = connection.execute(rest_sql, val).fetchone()
+
+        menu_sql = "SELECT * FROM menu_info WHERE rest_id = %s AND food_id = %s;"
+        val = (rest_id, food_id)
+        food = connection.execute(menu_sql, val).fetchone()
+        
+        #saving cart row
+        #check if menu already exist in cart
+        cart_checking_sql = "SELECT * FROM cart WHERE user_id = '" + str(user_id) +"' AND food_id = " +str(food_id) + " and order_number = 0" + ";"
+        #val3 = (user_id, food_id)
+        
+        order = connection.execute(cart_checking_sql).fetchall()
+        
+        #이 트라이는 항상 있어야 함
         if not (order):
             print('okay')
-            sql4 = "INSERT INTO cart(user_id,food_id,quantity, price, food_name, rest_id, rest_name) VALUES (%s, %s, %s, %s, %s, %s, %s);" 
+            sql4 = "INSERT INTO cart(user_id,food_id,quantity, price, food_name, rest_id, rest_name, order_number) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);" 
             # val = (user_id, food_id, 1, food.price, food.name, rest_id, )
-            val = (user_id, food_id, 1, food.price, food.food_name, rest_id, restaurant.name)
+            val = (user_id, food_id, 1, food.price, food.food_name, rest_id, restaurant.name, 0)
             connection.execute(sql4, val)
 
             return MSG_ADD_SUCCESS
 
         else:
-            sql5 = "SELECT quantity FROM avocado1.cart WHERE food_id = " + str(food_id)
+            sql5 = "SELECT quantity FROM avocado1.cart WHERE food_id = " + str(food_id) + " and order_number = 0"
             numFood = connection.execute(sql5).fetchone()
             numFood = numFood[0]
 
-            sql6 = "UPDATE cart SET quantity = "+str(numFood+1) +" WHERE food_id = " + str(food_id)
-            connection.execute(sql6)
+            sql6 = "UPDATE cart set quantity = %s WHERE food_id = %s and order_number = 0"
+            value = (numFood+1, food_id)
+            connection.execute(sql6, value)
+
             return MSG_UPDATE_SUCCESS
 
     except Exception as e:
+        print(e)
         return MSG_FAIL_TO_CREATE
 
 
@@ -112,9 +116,9 @@ def lambda_handler(event, context):
 if __name__ == "__main__":
 
     body = {
-        "user_email": "sum@c8o.uk",
-        "rest_id": "1000",     
-        "food_id": "1003" 
+        "user_email": "munhong@gmail.com",
+        "rest_id": "1001",     
+        "food_id": "122" 
     }
 
     event = {
