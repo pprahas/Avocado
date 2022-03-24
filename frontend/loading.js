@@ -1,18 +1,3 @@
-const user_email = localStorage.getItem("user_email")
-const account = document.getElementById("account");
-const loading_screen = document.getElementById("loading_container");
-
-if (user_email == null){
-  console.log("NOT LOGGED IN!");
-  account.innerHTML = 'Log-In';
-} else {
-  console.log("LOGGED IN!");
-  account.innerHTML = user_email;
-  account.href = "signout.html";
-}
-
-const ele = document.getElementById("most_popular");
-
 const data = {};
 
 fetch('https://5kwlyceua3.execute-api.us-east-1.amazonaws.com/default/home-most_popular', {
@@ -35,15 +20,12 @@ fetch('https://5kwlyceua3.execute-api.us-east-1.amazonaws.com/default/home-most_
 
           document.getElementById('most_popular').innerHTML = output;
           let btn = document.getElementsByClassName('rest_link');
+          // console.log(btn);
           for (var i = 0; i < btn.length; i++) {
               btn[i].addEventListener('click', clickFunc);
           }
       }
 
       console.log("Complete!");
-      loading_screen.style.z_index = "-100";
-      loading_screen.style.opacity = "0";
-
-
-
+      window.location = ('index.html');
   })

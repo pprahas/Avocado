@@ -1,0 +1,8 @@
+#loading {
+position: fixed;
+width: 50%;
+height: 50%;
+background-color: #cccccc;
+background-image: linear-gradient(red, yellow, green);
+border: 1px red solid;
+}
