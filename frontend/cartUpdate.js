@@ -15,8 +15,8 @@ function submitOrder() {
         if (data.status === 200) {
             console.log(cart_list);
             // use this poulate the html in cofirmation page
-            
-            // window.location = 'confirmationPage.html';
+
+            window.location = 'confirmationPage.html';
 
         } else {
             console.log(data.statusText);
