@@ -41,7 +41,7 @@ fetch('https://5kwlyceua3.execute-api.us-east-1.amazonaws.com/default/home-most_
       }
 
       console.log("Complete!");
-      loading_screen.style.z_index = "-100";
+      loading_screen.style.zIndex = "-100";
       loading_screen.style.opacity = "0";
 
 

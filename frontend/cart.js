@@ -1,5 +1,10 @@
 let user_email = localStorage.getItem("user_email");
 
+if (user_email == null){
+  console.log("NOT LOGGED IN!");
+  window.location = "login.html";
+}
+
 const ele = document.getElementById("cart_list");
 const submit_order = document.getElementById("submit_order");
 submit_order.addEventListener('click', submitOrder());
@@ -31,11 +36,6 @@ const data = {
     user_email: user_email
 };
 
-if (user_email == null){
-  console.log("NOT LOGGED IN!");
-  window.location = "login.html";
-}
-
 async function displaycart() {
     fetch('https://q6y9jbmbwl.execute-api.us-east-1.amazonaws.com/default/cart-list_of_items', {
         method: 'POST',
@@ -45,7 +45,7 @@ async function displaycart() {
             if (data.status == 200) {
                 cart_list = data.body;
                 let output = "";
-    
+
                 cart_list.forEach(function(cart) {
                     output += `
                     <tr id="${cart.rest_id}+${cart.food_id}+cart-items" class="cart-items">
@@ -71,7 +71,7 @@ displaycart();
 
 async function displayPricing() {
     const ele2 = document.getElementById("totalPrice");
-    
+
     var todayDate = new Date().toISOString().slice(0, 10);
     const data2 = {
         user_email: user_email,
@@ -91,7 +91,7 @@ async function displayPricing() {
                 <div class="totalPrice">$${Number((val.total_price).toFixed(2))}</div>
                 `
                 document.getElementById('totalPrice').innerHTML = output;
-    
+
                 if (val.discount_percent != 0 && val.total_price != 0) {
                     let output2 = "";
                     let discounted_price = val.total_price * (val.discount_percent/ 100)
@@ -102,7 +102,7 @@ async function displayPricing() {
                     `
                     document.getElementById('discount').innerHTML = output2;
                 }
-    
+
             } else {
                 console.log(data.statusText);
             }

@@ -1,12 +1,14 @@
 let rest_id = localStorage.getItem('rest_id');
 let user_id = localStorage.getItem("user_email");
 const ele = document.getElementById("most_popular");
+const loading_screen = document.getElementById("loading_container");
+
 
 const data = {
     rest_id: rest_id
 };
 
-    
+
 fetch('https://3b01ihtpq4.execute-api.us-east-1.amazonaws.com/default/restaurants-menu', {
     method: 'POST',
     body: JSON.stringify(data)
@@ -41,6 +43,7 @@ fetch('https://3b01ihtpq4.execute-api.us-east-1.amazonaws.com/default/restaurant
 
 if (user_id == null){
   console.log("NOT LOGGED IN!");
+        finishLoading();
 } else {
   console.log("LOGGED IN!");
   getCartQuantity();
@@ -64,6 +67,13 @@ function getCartQuantity(){
           console.log(data.statusText);
       }
   });
+  finishLoading();
+}
+
+function finishLoading(){
+  console.log("fetch complete");
+  loading_screen.style.zIndex = "-100";
+  loading_screen.style.opacity = "0";
 }
 
 function addToCart() {
