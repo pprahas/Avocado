@@ -60,6 +60,11 @@ def lambda_handler(event, context):
     sql = "SELECT * FROM avocado1.menu_info WHERE rest_id = %s;"
     val  = rest_id
     result = connection.execute(sql, val).fetchall()
+
+    sql2 = "SELECT * FROM rest_info WHERE rest_id = %s;"
+    val2  = rest_id
+    rest_name = connection.execute(sql2, val2).fetchone()
+    rest_name = rest_name.name
    
     bucket_name = 'avocado-bucket-1'
 
@@ -71,12 +76,13 @@ def lambda_handler(event, context):
             break
         result_list.append(
             {
+                "rest_name": rest_name,
                 "food_id": food.food_id,
                 "food_name": food.food_name,
                 "price" : food.price,
                 "rating" : food.rating,
                 # "image": food.filepath_s3,
-                "image": "https://{}.s3.amazonaws.com/{}".format(bucket_name, food.filepath_s3)
+                "image": "https://{}.s3.amazonaws.com/{}".format(bucket_name, 'MENU/{}/{}.png'.format(rest_id, food.food_id))
             }
         )
 
@@ -113,7 +119,7 @@ if __name__ == "__main__":
     #  print(menu_dic)
 
     body = {
-        "rest_id": "1111"       
+        "rest_id": "1000"       
     }
 
     event = {
