@@ -30,6 +30,8 @@ fetch('https://3b01ihtpq4.execute-api.us-east-1.amazonaws.com/default/restaurant
                 </div>
                 <button id=${menu.food_id} class="addToCart" type="submit">Add to Cart</button>
             </div>`
+            const menu_name = document.getElementById("rest_name");
+            menu_name.innerHTML = menu.rest_name;
             });
 
             document.getElementById('restaurant_menu').innerHTML = output;
@@ -66,8 +68,8 @@ function getCartQuantity(){
       } else {
           console.log(data.statusText);
       }
-  });
   finishLoading();
+});
 }
 
 function finishLoading(){
