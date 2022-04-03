@@ -48,7 +48,8 @@ async function order_again() {
     const ele = document.getElementById("Order Again");
     
     const data = {
-        user_email: "munhong@gmail.com"
+        // user_email: "munhong@gmail.com"
+        user_email: user_email
     };
 
 
@@ -120,8 +121,8 @@ async function food_list(food_type) {
 }
 
 if (user_email != null) {
+    order_again();
 }
-order_again();
 most_popular_list();
 food_list("Fast Food");
 food_list("Asian");
