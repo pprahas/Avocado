@@ -1,24 +1,13 @@
-from base64 import encode
 import json
-from operator import imod
 import sqlalchemy as db
-import datetime
-from hashlib import sha256
-import datetime
-from datetime import date
-from datetime import timedelta
-import random
-import sqlite3
-import boto3
-from PIL import Image
-from io import BytesIO
-import base64
 
 MSG_REQUEST_NO_BODY = {"status": 500, "statusText": "Requests has no body.", "body": {}}
 MSG_REQUEST_INCORRECT_FORMAT = {"status": 500, "statusText": "Requests incorrect format.", "body": {}}
-MSG_SUCCESS = {"status": 200, "statusText": "User created account successfully.", "body": {}}
+MSG_SUCCESS = {"status": 200, "statusText": "Restaurants order again rest successfully.", "body": {}}
 MSG_FAIL_TO_CREATE = {"status": 422, "statusText": "Account creation failed.", "body": {}}
 MSG_ORDER_AGAIN_FAIL = {"status": 600, "statusText": "Order again table is unavailable.", "body": {}}
+MSG_INVALID_ID = {"status": 422, "statusText": "Invalid ID.", "body": {}}
+
 
 def input_checking( func ):
 
@@ -62,25 +51,38 @@ def db_connection():
 @input_checking   
 def lambda_handler(event, context):
     # TODO implement
-    user_id = int(event.get('user_id'))
-
-    # ONLY FOR ORDER AGAIN -----------------------------------------------------------------------------------------------
-
-    sql = "SELECT rest_id FROM order_history WHERE user_id = '{}' ORDER BY order_date DESC LIMIT 1".format(user_id)
 
     #connect to db
     engine = db_connection()
     connection = engine.connect()
-    rows = connection.execute(sql)
-    
-    #s3 initialization
-    s3 = boto3.resource('s3')
-    bucket_name = 'avocado-bucket-1'
 
-    #Initializinf stuff for resizing
-    FIXED_WIDTH = 300
-    FIXED_HEIGHT = 200
-    resize = 0.1
+    user_email = str(event.get('user_email'))
+
+    sql = "SELECT user_id FROM user_info WHERE user_email = %s;"
+    value = (user_email)
+    user_id = connection.execute(sql, value).fetchone()
+
+    if user_id:
+        user_id = user_id.user_id
+    else:
+        return MSG_INVALID_ID
+
+    # ONLY FOR ORDER AGAIN -----------------------------------------------------------------------------------------------
+
+    sql = "SELECT rest_id FROM order_history WHERE user_id = '{}' ORDER BY order_date DESC LIMIT 1".format(user_id)
+    rows = connection.execute(sql)
+
+    
+    # #s3 initialization
+    # s3 = boto3.resource('s3')
+    # bucket_name = 'avocado-bucket-1'
+
+    # #Initializinf stuff for resizing
+    # FIXED_WIDTH = 300
+    # FIXED_HEIGHT = 200
+    # resize = 0.1
+
+    bucket_name = 'avocado-bucket-1'
 
     for row in rows:
         result = row[0]
@@ -92,24 +94,24 @@ def lambda_handler(event, context):
     latest_rest = []
     
     for row in rows:
-        filename = row.filepath_s3
-        s3_object = s3.Bucket(bucket_name).Object(filename).get()
-        encoded_string_to_frontend = base64.b64encode(s3_object['Body'].read())
+        # filename = row.filepath_s3
+        # s3_object = s3.Bucket(bucket_name).Object(filename).get()
+        # encoded_string_to_frontend = base64.b64encode(s3_object['Body'].read())
 
-        #resizing image
-        img = Image.open(BytesIO(base64.b64decode(encoded_string_to_frontend)))
-        resize = FIXED_WIDTH/img.size[0] if (FIXED_WIDTH/img.size[0] > FIXED_HEIGHT/img.size[1]) else FIXED_HEIGHT/img.size[1]
+        # #resizing image
+        # img = Image.open(BytesIO(base64.b64decode(encoded_string_to_frontend)))
+        # resize = FIXED_WIDTH/img.size[0] if (FIXED_WIDTH/img.size[0] > FIXED_HEIGHT/img.size[1]) else FIXED_HEIGHT/img.size[1]
 
-        x = img.size[0]
-        y = img.size[1]
+        # x = img.size[0]
+        # y = img.size[1]
 
-        img = img.resize(( int(x*resize), int(y*resize)),Image.ANTIALIAS)
+        # img = img.resize(( int(x*resize), int(y*resize)),Image.ANTIALIAS)
 
-        buffered = BytesIO()
-        img.save(buffered, format="png")
-        img_str = base64.b64encode(buffered.getvalue())
+        # buffered = BytesIO()
+        # img.save(buffered, format="png")
+        # img_str = base64.b64encode(buffered.getvalue())
 
-        img_str = img_str.decode("utf-8")
+        # img_str = img_str.decode("utf-8")
 
         latest_rest.append(
             {
@@ -117,12 +119,14 @@ def lambda_handler(event, context):
                 "rest_name": row.name,
                 "rest_type": row.rest_type,
                 "rating": row.rating,
-                "image": img_str
+                "image": "https://{}.s3.amazonaws.com/RESTAURANTS/{}/a.png".format(bucket_name, row.rest_id)
             }
         )
 
+        MSG_SUCCESS['body'] = latest_rest
+
     try:
-        return latest_rest
+        return MSG_SUCCESS
 
     except Exception as e:
         print(e)
@@ -130,7 +134,7 @@ def lambda_handler(event, context):
 
 if __name__ == "__main__":
     body = {
-        "user_id": "183269",
+        "user_email": "munhong@gmail.com",
     }
 
     event = {

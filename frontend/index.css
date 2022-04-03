@@ -52,7 +52,7 @@ a:hover{
   height: 200px;
   min-height: 300px;
   min-width: 800px;
-  position: absolute;
+  position: relative;
   left: 50%;
   transform: translateX(-50%);
 }
