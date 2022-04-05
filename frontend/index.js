@@ -45,7 +45,6 @@ async function most_popular_list() {
 }
 
 async function order_again() {
-    const ele = document.getElementById("Order Again");
     
     const data = {
         // user_email: "munhong@gmail.com"
@@ -58,10 +57,21 @@ async function order_again() {
           body: JSON.stringify(data)
       }).then((res) => res.json())
       .then((data) => {
+          
+          console.log(data)
+          if (data.status == 200) {
+              if (data.body.length != 0) {
+                let title = `
+                    <div class="category">
+                    <h1>Order Again</h1>
+                    </div>
+                    <section id="Order Again" class="main_container">
+                    </section>
+                `;
+                document.getElementById("place_holder_order_again").innerHTML = title;  
 
-        console.log(data)
-        if (data.status == 200) {
-            if (data.body.length != 0) {
+                const ele = document.getElementById("Order Again");
+
                 let val = data.body;
                 let output = "";
                 val.forEach(function(restaurant) {
