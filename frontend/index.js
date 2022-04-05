@@ -60,25 +60,26 @@ async function order_again() {
       .then((data) => {
 
         console.log(data)
-    
-          if (data.status == 200) {
-              let val = data.body;
-              let output = "";
-              val.forEach(function(restaurant) {
-                  output += `
-                  <div class="rest_container">
-                      <a id=${restaurant.rest_id} class="rest_link" href="restaurant.html"><img class="rest_image" src=${restaurant.image}
-                       alt="Red dot" /></a>
-                      ${restaurant.rest_name}
-                  </div>`
-              });
-    
-              document.getElementById("Order Again").innerHTML = output;
-              let btn = document.getElementsByClassName('rest_link');
-              for (var i = 0; i < btn.length; i++) {
-                  btn[i].addEventListener('click', clickFunc);
-              }
-          }     
+        if (data.status == 200) {
+            if (data.body.length != 0) {
+                let val = data.body;
+                let output = "";
+                val.forEach(function(restaurant) {
+                    output += `
+                    <div class="rest_container">
+                        <a id=${restaurant.rest_id} class="rest_link" href="restaurant.html"><img class="rest_image" src=${restaurant.image}
+                        alt="Red dot" /></a>
+                        ${restaurant.rest_name}
+                    </div>`
+                });
+        
+                document.getElementById("Order Again").innerHTML = output;
+                let btn = document.getElementsByClassName('rest_link');
+                for (var i = 0; i < btn.length; i++) {
+                    btn[i].addEventListener('click', clickFunc);
+                }
+            }
+        }     
     })   
 }
 
