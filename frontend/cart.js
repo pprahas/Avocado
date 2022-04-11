@@ -1,5 +1,5 @@
 let user_email = localStorage.getItem("user_email");
-
+const loading_screen = document.getElementById("loading_container");
 const ele = document.getElementById("cart_list");
 
 let cart_list;
@@ -39,6 +39,7 @@ async function displaycart() {
                 for (var i = 0; i < btn.length; i++) {
                     btn[i].addEventListener('click', modifyCart);
                 }
+                finishLoading();
             }
     });
 
@@ -86,3 +87,9 @@ async function displayPricing() {
         });
 }
 displayPricing();
+
+function finishLoading(){
+  console.log("fetch complete");
+  loading_screen.style.zIndex = "-100";
+  loading_screen.style.opacity = "0";
+}

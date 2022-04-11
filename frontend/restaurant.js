@@ -40,12 +40,12 @@ fetch('https://3b01ihtpq4.execute-api.us-east-1.amazonaws.com/default/restaurant
             for (var i = 0; i < btn.length; i++) {
                 btn[i].addEventListener('click', addToCart);
             }
+            finishLoading();
         }
 });
 
 if (user_id == null){
   console.log("NOT LOGGED IN!");
-        finishLoading();
 } else {
   console.log("LOGGED IN!");
   getCartQuantity();
@@ -68,7 +68,6 @@ function getCartQuantity(){
       } else {
           console.log(data.statusText);
       }
-  finishLoading();
 });
 }
 

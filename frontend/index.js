@@ -13,15 +13,15 @@ if (user_email == null){
 
 async function most_popular_list() {
     const ele = document.getElementById("most_popular");
-    
+
     const data = {};
-    
+
     fetch('https://5kwlyceua3.execute-api.us-east-1.amazonaws.com/default/home-most_popular', {
           method: 'POST',
           body: JSON.stringify(data)
       }).then((res) => res.json())
       .then((data) => {
-    
+
           if (data.status == 200) {
               let val = data.body;
               let output = "";
@@ -33,19 +33,19 @@ async function most_popular_list() {
                       ${restaurant.rest_name}
                   </div>`
               });
-    
+
               document.getElementById('most_popular').innerHTML = output;
               let btn = document.getElementsByClassName('rest_link');
               for (var i = 0; i < btn.length; i++) {
                   btn[i].addEventListener('click', clickFunc);
               }
-          }    
-    
+          }
+
       })
 }
 
 async function order_again() {
-    
+
     const data = {
         // user_email: "munhong@gmail.com"
         user_email: user_email
@@ -57,7 +57,7 @@ async function order_again() {
           body: JSON.stringify(data)
       }).then((res) => res.json())
       .then((data) => {
-          
+
           console.log(data)
           if (data.status == 200) {
               if (data.body.length != 0) {
@@ -68,7 +68,7 @@ async function order_again() {
                     <section id="Order Again" class="main_container">
                     </section>
                 `;
-                document.getElementById("place_holder_order_again").innerHTML = title;  
+                document.getElementById("place_holder_order_again").innerHTML = title;
 
                 const ele = document.getElementById("Order Again");
 
@@ -82,21 +82,21 @@ async function order_again() {
                         ${restaurant.rest_name}
                     </div>`
                 });
-        
+
                 document.getElementById("Order Again").innerHTML = output;
                 let btn = document.getElementsByClassName('rest_link');
                 for (var i = 0; i < btn.length; i++) {
                     btn[i].addEventListener('click', clickFunc);
                 }
             }
-        }     
-    })   
+        }
+    })
 }
 
 
 async function food_list(food_type) {
     const ele = document.getElementById(food_type);
-    
+
     const data = {
         rest_type: food_type
     };
@@ -109,7 +109,7 @@ async function food_list(food_type) {
       .then((data) => {
 
         console.log(data);
-    
+
           if (data.status == 200) {
               let val = data.body;
               let output = "";
@@ -121,14 +121,18 @@ async function food_list(food_type) {
                       ${restaurant.rest_name}
                   </div>`
               });
-    
+
               document.getElementById(food_type).innerHTML = output;
               let btn = document.getElementsByClassName('rest_link');
               for (var i = 0; i < btn.length; i++) {
                   btn[i].addEventListener('click', clickFunc);
               }
-          }     
-    })   
+
+              console.log("Complete!");
+              loading_screen.style.zIndex = "-100";
+              loading_screen.style.opacity = "0";
+          }
+    })
 }
 
 if (user_email != null) {
@@ -137,10 +141,3 @@ if (user_email != null) {
 most_popular_list();
 food_list("Fast Food");
 food_list("Asian");
-
-
-console.log("Complete!");
-loading_screen.style.zIndex = "-100";
-loading_screen.style.opacity = "0";
-
-
