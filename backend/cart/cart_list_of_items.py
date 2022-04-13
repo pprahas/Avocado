@@ -50,32 +50,26 @@ def lambda_handler(event, context):
     # Connect to DB
     engine = db_connection()
     connection = engine.connect()
+    metadata = db.MetaData()
 
     user_email = str(event.get('user_email'))
 
-    sql = "SELECT user_id FROM user_info WHERE user_email = %s;"
-    value = (user_email)
-    user_id = connection.execute(sql, value).fetchone()
-    
-    if (len(user_id)):
+    user_info = db.Table('user_info', metadata, autoload=True, autoload_with=engine)
+    query = db.select(user_info.columns.user_id).where(user_info.columns.user_email == user_email)
+    user_id = connection.execute(query).fetchone()
+
+    if user_id:
         user_id = user_id.user_id
     else:
         return MSG_USER_NOT_EXIST
 
-    sql = "SELECT * FROM cart WHERE user_id = %s and order_number = 0;"
-    value = (user_id)
-    result = connection.execute(sql, value).fetchall()
+    cart = db.Table('cart', metadata, autoload=True, autoload_with=engine)
+    query = db.select(cart).where(cart.columns.user_id == user_id and cart.columns.order_number == 0)
+    result = connection.execute(query).fetchall()
 
     food_list = []
-    
-    for rows in result:
-        # if order has been placed don't display
-        if rows.order_number != 0:
-            continue
 
-        sql = "SELECT filepath_s3 FROM menu_info WHERE food_id = %s;"
-        value = (rows.food_id)
-        food_image = connection.execute(sql, value).fetchone()
+    for rows in result:
 
         food_list.append(
             {
@@ -84,9 +78,8 @@ def lambda_handler(event, context):
                 "food_name": rows.food_name,
                 "food_id": rows.food_id,
                 "price": rows.price,
-                "quantity": rows.quantity,
-                "img": food_image.filepath_s3
-                # "image": "https://{}.s3.amazonaws.com/{}".format(bucket_name, row.filepath_s3)
+                "quantity": rows.quantity
+                # "img": "https://{}.s3.amazonaws.com/{}".format(bucket_name, rows.filepath_s3)
             }
         )
 

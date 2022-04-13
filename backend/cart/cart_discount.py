@@ -50,14 +50,15 @@ def lambda_handler(event, context):
     # Connect to DB
     engine = db_connection()
     connection = engine.connect()
+    metadata = db.MetaData()
 
     # Get User ID from User Email
     user_email = str(event.get('user_email'))
     date_specified = event.get('date_specified')
 
-    sql = "SELECT user_id FROM user_info WHERE user_email = %s;"
-    value = (user_email)
-    user_id = connection.execute(sql, value).fetchone()
+    user_info = db.Table('user_info', metadata, autoload=True, autoload_with=engine)
+    query = db.select(user_info.columns.user_id).where(user_info.columns.user_email == user_email)
+    user_id = connection.execute(query).fetchone()
 
     if user_id:
         user_id = user_id.user_id
@@ -65,15 +66,18 @@ def lambda_handler(event, context):
         return MSG_INVALID_ID
 
     # try:
-    sql = "SELECT * FROM events WHERE date = %s;"
-    value = (date_specified)
-    discount = connection.execute(sql, value).fetchone()
+    events = db.Table('events', metadata, autoload=True, autoload_with=engine)
+    query = db.select([events]).where(events.columns.date == date_specified)
+    discount = connection.execute(query).fetchone()
 
-    sql = """SELECT sum(quantity*price) as sum_price FROM cart 
-            where user_id = %s and order_number = 0;
-    """
-    value = (user_id)
-    result = connection.execute(sql, value).fetchone()
+    print(discount)
+
+    cart = db.Table('cart', metadata, autoload=True, autoload_with=engine)
+    query = db.select(db.func.sum(cart.columns.quantity * cart.columns.price).label('sum_price'))
+    query = query.where(cart.columns.user_id == user_id and cart.columns.order_number == 0)
+    result = connection.execute(query).fetchone()
+
+    print(result)
     
     event_name = discount.event_name if discount else "",
     discount_amount = discount.discount_amount if discount else 0,
@@ -94,7 +98,7 @@ def lambda_handler(event, context):
 if __name__ == "__main__":
     body = {
         "user_email": "munhong@gmail.com",
-        "date_specified": "2022-03-15"
+        "date_specified": "2022-04-11"
     }
     event = {
         "body": json.dumps(body)

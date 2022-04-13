@@ -2,6 +2,8 @@ import json
 import sqlalchemy as db
 import datetime
 
+from sqlalchemy import null
+
 MSG_REQUEST_NO_BODY = {"status": 500, "statusText": "Requests has no body.", "body": {}}
 MSG_REQUEST_INCORRECT_FORMAT = {"status": 500, "statusText": "Requests incorrect format.", "body": {}}
 MSG_SUCCESS = {"status": 200, "statusText": "Show quantity success.", "body": {}}
@@ -49,13 +51,14 @@ def lambda_handler(event, context):
     # Connect to DB
     engine = db_connection()
     connection = engine.connect()
+    metadata = db.MetaData()
 
     # Get User ID from User Email
     user_email = str(event.get('user_email'))
 
-    sql = "SELECT user_id FROM user_info WHERE user_email = %s;"
-    value = (user_email)
-    user_id = connection.execute(sql, value).fetchone()
+    user_info = db.Table('user_info', metadata, autoload=True, autoload_with=engine)
+    query = db.select(user_info.columns.user_id).where(user_info.columns.user_email == user_email)
+    user_id = connection.execute(query).fetchone()
 
     if user_id:
         user_id = user_id.user_id
@@ -63,14 +66,13 @@ def lambda_handler(event, context):
         return MSG_INVALID_ID
 
     try:
-        sql = """SELECT sum(quantity) as total_quantity FROM cart
-                where user_id = %s and order_number = 0;
-        """
-        value = (user_id)
-        result = connection.execute(sql, value).fetchone()
+        cart = db.Table('cart', metadata, autoload=True, autoload_with=engine)
+        query = db.select(db.func.sum(cart.columns.quantity)).where(cart.columns.user_id == user_id and cart.columns.order_number == 0)
+        result = connection.execute(query).fetchone()[0]
 
-        result = result.total_quantity if result.total_quantity else 0
-        
+        if not result:
+            result = 0
+
         MSG_SUCCESS['body'] = {
             "quantity": int(result)
         }
@@ -83,7 +85,7 @@ def lambda_handler(event, context):
 
 if __name__ == "__main__":
     body = {
-        "user_email": "munhong@gmail.com",
+        "user_email": "seanahn100@gmail.com",
     }
     event = {
         "body": json.dumps(body)
