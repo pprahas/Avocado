@@ -8,12 +8,19 @@ header{
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  width: 90%;
-  min-width: 800px;
-  position: relative;
+  width: 100%;
+  position: fixed;
   left: 50%;
+  top: 0px;
   transform: translateX(-50%);
-  margin-top: 20px;
+  padding: 15px 0px;
+  margin-top: 0px;
+  z-index: 10;
+
+  background: white;
+  -webkit-box-shadow: 0 4px 6px -6px #222;
+  -moz-box-shadow: 0 4px 6px -6px #222;
+  box-shadow: 0 4px 6px -6px #222;
 }
 
 .logo{
