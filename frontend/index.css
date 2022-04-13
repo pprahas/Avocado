@@ -48,7 +48,6 @@ a:hover{
   display: flex;
   flex-direction: row;
   align-items: center;
-  align-content: flex-start;
   justify-content: space-around;
   width: 90%;
   height: 200px;
@@ -57,6 +56,10 @@ a:hover{
   position: relative;
   left: 50%;
   transform: translateX(-50%);
+}
+
+.main_container div:last-child {
+  margin-right: auto;
 }
 
 .title_container{
@@ -85,6 +88,8 @@ a:hover{
 }
 
 .rest_container{
+  margin: auto;
+  border: 1px green solid;
   display: flex;
   flex-direction: column;
   align-items: center;
