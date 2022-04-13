@@ -44,7 +44,6 @@ a:hover{
 }
 
 .main_container{
-  border: 1px red solid;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -88,8 +87,7 @@ a:hover{
 }
 
 .rest_container{
-  margin: auto;
-  border: 1px green solid;
+  margin: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
