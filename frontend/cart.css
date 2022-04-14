@@ -67,10 +67,12 @@ a:hover{
 table {
 	width: 750px;
 	margin:50px auto;
+  border:none;
+  border-collapse: collapse;
 	}
 
 th {
-	/* background: #606c38; */
+	border-bottom: 1px solid black;
 	color: black;
   font-weight: bold;
   color: #008000;
@@ -79,7 +81,6 @@ th {
 
 td, th {
 	padding: 10px;
-	border: 1px solid #ccc;
 	text-align: left;
 }
 
@@ -95,7 +96,7 @@ td, th {
 }
 
 .totalPrice_container{
-  border-top: 1px black solid;
+  border-top: 2.5px black solid;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -145,12 +146,15 @@ td, th {
   left: 50%;
   bottom: 10%;
   transform: translateX(-50%);
+  transition: 0.2s;
 }
 
 #submit_order:hover{
-  background-color: #f8f9fa;
-  color: black;
-  transition: all 0.2s ease-in;
+  background: grey;
+  border: 1px solid grey;
+  -webkit-box-shadow: 0 4px 6px -6px #222;
+  -moz-box-shadow: 0 4px 6px -6px #222;
+  box-shadow: 0 4px 20px -6px #222;
 }
 
 #loading_container{

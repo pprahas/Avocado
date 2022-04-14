@@ -78,13 +78,9 @@ a:hover{
 }
 
 #signout_button:hover{
-  background-color: #f8f9fa;
-  border: 1px solid #f8f9fa;
-  color: black;
-  width: 320px;
-  height: 53px;
-  font-size: 21px;
+  background: grey;
+  border: 1px solid grey;
   -webkit-box-shadow: 0 4px 6px -6px #222;
   -moz-box-shadow: 0 4px 6px -6px #222;
-  box-shadow: 0 10px 40px -4px #222;
+  box-shadow: 0 4px 20px -6px #222;
 }
