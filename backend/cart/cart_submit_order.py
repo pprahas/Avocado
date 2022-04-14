@@ -53,6 +53,7 @@ def lambda_handler(event, context):
     # Connect to DB
     engine = db_connection()
     connection = engine.connect()
+    metadata = db.MetaData()
 
     user_email = event.get('user_email')
     option = int(event.get('options'))
@@ -67,19 +68,18 @@ def lambda_handler(event, context):
         if order_number != 0:
             break
 
-    sql = "SELECT user_id FROM user_info WHERE user_email = %s;"
-    value = (user_email)
-    user_id = connection.execute(sql, value).fetchone()
+    user_info = db.Table('user_info', metadata, autoload=True, autoload_with=engine)
+    query = db.select(user_info.columns.user_id).where(user_info.columns.user_email == user_email)
+    user_id = connection.execute(query).fetchone()
     
-    if (len(user_id)):
+    if user_id:
         user_id = user_id.user_id
     else:
         return MSG_USER_NOT_EXIST
 
-    sql = "SELECT * FROM cart WHERE user_id = %s and order_number = 0;"
-    value = (user_id)
-    result = connection.execute(sql, value).fetchall()
-
+    cart = db.Table('cart', metadata, autoload=True, autoload_with=engine)
+    query = db.select(cart).where(cart.columns.user_id == user_id and cart.columns.order_number == 0)
+    result = connection.execute(query).fetchall()
 
     rest_id_list = []
 
