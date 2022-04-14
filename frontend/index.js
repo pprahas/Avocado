@@ -2,6 +2,8 @@ const user_email = localStorage.getItem("user_email")
 const account = document.getElementById("account");
 const loading_screen = document.getElementById("loading_container");
 
+disableScroll();
+
 if (user_email == null){
   console.log("NOT LOGGED IN!");
   account.innerHTML = 'Log-In';
@@ -142,4 +144,21 @@ function finishLoading(){
   console.log("fetch complete");
   loading_screen.style.zIndex = "-100";
   loading_screen.style.opacity = "0";
+  enableScroll();
+}
+
+
+function disableScroll() {
+    // Get the current page scroll position
+    scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
+
+        // if any scroll is attempted, set this to the previous value
+        window.onscroll = function() {
+            window.scrollTo(scrollLeft, scrollTop);
+        };
+}
+
+function enableScroll() {
+    window.onscroll = function() {};
 }
