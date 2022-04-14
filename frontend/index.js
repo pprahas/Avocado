@@ -40,7 +40,7 @@ async function most_popular_list() {
                   btn[i].addEventListener('click', clickFunc);
               }
           }
-
+          finishLoading();
       })
 }
 
@@ -127,10 +127,6 @@ async function food_list(food_type) {
               for (var i = 0; i < btn.length; i++) {
                   btn[i].addEventListener('click', clickFunc);
               }
-
-              console.log("Complete!");
-              loading_screen.style.zIndex = "-100";
-              loading_screen.style.opacity = "0";
           }
     })
 }
@@ -141,3 +137,9 @@ if (user_email != null) {
 most_popular_list();
 food_list("Fast Food");
 food_list("Asian");
+
+function finishLoading(){
+  console.log("fetch complete");
+  loading_screen.style.zIndex = "-100";
+  loading_screen.style.opacity = "0";
+}

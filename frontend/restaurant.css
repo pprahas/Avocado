@@ -20,7 +20,7 @@ header{
   background: white;
   -webkit-box-shadow: 0 4px 6px -6px #222;
   -moz-box-shadow: 0 4px 6px -6px #222;
-  box-shadow: 0 4px 6px -6px #222;
+  box-shadow: 0 4px 20px -6px #222;
 }
 
 .logo{
@@ -65,10 +65,11 @@ a:hover{
 }
 
 .menu_image{
-  max-width: 200px;
-  height: 200px;
-  object-fit:cover
+  max-width: 160px;
+  height: 160px;
+  object-fit:cover;
 }
+
 
 .menu_name{
   text-align: center;
@@ -88,10 +89,15 @@ button {
   border: 1px solid #495057;
   cursor: pointer;
   margin-bottom: 20px;
+  transition: 0.3s;
 }
 
 button:hover {
   background: grey;
+  border: 1px solid grey;
+  -webkit-box-shadow: 0 4px 6px -6px #222;
+  -moz-box-shadow: 0 4px 6px -6px #222;
+  box-shadow: 0 4px 20px -6px #222;
 }
 
 .cart_quantity{

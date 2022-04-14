@@ -66,21 +66,21 @@ a:hover{
 
 table {
 	width: 750px;
-	border-collapse: collapse;
 	margin:50px auto;
 	}
 
 th {
-	background: #606c38;
-	color: white;
-  font-weight: normal;
+	/* background: #606c38; */
+	color: black;
+  font-weight: bold;
+  color: #008000;
+  font-size: 30px;
 	}
 
 td, th {
 	padding: 10px;
 	border: 1px solid #ccc;
 	text-align: left;
-	font-size: 18px;
 }
 
 .delete_button{

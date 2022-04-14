@@ -8,12 +8,19 @@ header{
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  width: 90%;
-  min-width: 800px;
-  position: relative;
+  width: 100%;
+  position: fixed;
   left: 50%;
+  top: 0px;
   transform: translateX(-50%);
-  margin-top: 20px;
+  padding: 15px 0px;
+  margin-top: 0px;
+  z-index: 10;
+
+  background: white;
+  -webkit-box-shadow: 0 4px 6px -6px #222;
+  -moz-box-shadow: 0 4px 6px -6px #222;
+  box-shadow: 0 4px 20px -6px #222;
 }
 
 .logo{
@@ -58,18 +65,26 @@ a:hover{
 }
 
 #signout_button{
-  width: 30%;
+  width: 300px;
+  height: 50px;
   padding: 10px;
   background: #495057;
   color: white;
-  font-size: 14px;
+  font-size: 20px;
   border: 1px solid #495057;
   cursor: pointer;
   margin-bottom: 20px;
+  transition: all 0.2s ease-in;
 }
 
 #signout_button:hover{
   background-color: #f8f9fa;
+  border: 1px solid #f8f9fa;
   color: black;
-  transition: all 0.2s ease-in;
+  width: 320px;
+  height: 53px;
+  font-size: 21px;
+  -webkit-box-shadow: 0 4px 6px -6px #222;
+  -moz-box-shadow: 0 4px 6px -6px #222;
+  box-shadow: 0 10px 40px -4px #222;
 }
