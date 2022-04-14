@@ -8,12 +8,18 @@
    flex-direction: row;
    justify-content: space-around;
    align-items: center;
-   width: 90%;
-   min-width: 800px;
-   position: relative;
+   width: 100%;
+   position: fixed;
    left: 50%;
+   top: 0px;
    transform: translateX(-50%);
-   margin-top: 20px;
+   padding: 10px 0px;
+   margin-top: 0px;
+   z-index: 10;
+   background: white;
+   -webkit-box-shadow: 0 4px 6px -6px #222;
+   -moz-box-shadow: 0 4px 6px -6px #222;
+   box-shadow: 0 4px 20px -6px #222;
  }
 
  .logo{
@@ -84,4 +90,16 @@
    -webkit-box-shadow: 0 4px 6px -6px #222;
    -moz-box-shadow: 0 4px 6px -6px #222;
    box-shadow: 0 4px 20px -6px #222;
+ }
+
+ .footer{
+   position: absolute;
+   left: 50%;
+   bottom: -10%;
+   transform: translateX(-50%);
+   width: 100%;
+   text-align: center;
+   margin: 100px auto;
+   padding-top: 50px;
+   border-top: 2px solid black;
  }
