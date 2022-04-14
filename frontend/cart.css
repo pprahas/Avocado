@@ -85,13 +85,19 @@ td, th {
 }
 
 .delete_button{
-  border: 1px black solid;
+  border: 1px red solid;
+  background: white;
+  color: red;
   width: 100%;
+  padding: 5px 3px;
   font-weight: bold;
+  transition: 0.3s;
 }
 
 .delete_button:hover{
-  background: white;
+  border: 1px red solid;
+  color: white;
+  background: red;
   cursor: pointer;
 }
 
