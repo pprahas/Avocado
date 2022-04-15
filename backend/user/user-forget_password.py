@@ -116,7 +116,6 @@ def lambda_handler(event, context):
     text = msg.as_string()
     server = smtplib.SMTP('smtp.gmail.com',587)
    
-   
     try:
         server.starttls()
         server.login(email_user,email_password)
@@ -133,7 +132,7 @@ def lambda_handler(event, context):
 
 if __name__ == "__main__":
     body = {
-        "user_email": "p.prahas@gmail.com"
+        "user_email": "p.prahas@gmaifl.com"
     }
 
     event = {
@@ -143,3 +142,11 @@ if __name__ == "__main__":
 
     response = lambda_handler(event, context)
     print(response)
+
+"""
+Completed: Currently this code checks if the user_email exists and then sends an email with a
+           unique code
+Next Step: Instead of creating a new table to store the unique codes for a particular user. Generating
+           a temp password and sending that over to the email sounds better to me
+"""
+             
