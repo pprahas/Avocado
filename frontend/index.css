@@ -33,15 +33,32 @@ header{
 }
 
 .banner_title{
-  position: absolute;
+  position: fixed;
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 40px;
-  text-align: center;
-  color: white;
   background: black;
+  background-size: 200% 200%;
+	animation: gradient 2s ease infinite;
   padding: 20px 40px;
+  text-align: center;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+.banner_title h2, p{
+  color: white;
 }
 
 .logo{
@@ -176,4 +193,8 @@ position: absolute;
   width: 100%;
   text-align: center;
   padding: 50px 0px;
+}
+
+.footer p {
+  color: black;
 }

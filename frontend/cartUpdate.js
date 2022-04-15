@@ -17,9 +17,11 @@ function submitOrder() {
         console.log(data);
 
         if (data.status === 200) {
-            console.log(cart_list);
+          let output = "";
             // use this poulate the html in cofirmation page
-
+            cart_list.forEach(function(menu) {
+              console.log(menu);
+            });
             window.location = 'confirmationPage.html';
 
         } else {

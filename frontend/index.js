@@ -162,3 +162,18 @@ function disableScroll() {
 function enableScroll() {
     window.onscroll = function() {};
 }
+
+const checkpoint = 400;
+const title = document.getElementById('banner_title');
+var opacity = 0;
+
+window.addEventListener("scroll", () => {
+  const currentScroll = window.pageYOffset;
+  if (currentScroll <= checkpoint) {
+    opacity = 1 - currentScroll / checkpoint;
+  } else {
+    opacity = 0;
+  }
+  console.log(opacity)
+  title.style.opacity = opacity;
+});

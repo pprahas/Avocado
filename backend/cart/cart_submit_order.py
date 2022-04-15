@@ -84,7 +84,7 @@ def lambda_handler(event, context):
     rest_id_list = []
 
     for cart_item in result:
-        print(cart_item)
+        # print(cart_item)
         if cart_item.rest_id not in rest_id_list:
             # insert in order history
             sql = "INSERT INTO order_history(order_number, user_id, rest_id, price, options, status, order_date) VALUES (%s, %s, %s, %s, %s, %s, %s)"
