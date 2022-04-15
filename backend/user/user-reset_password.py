@@ -159,3 +159,10 @@ if __name__ == "__main__":
 
     response = lambda_handler(event, context)
     print(response)
+
+"""
+Completed: Currently this code checks if the user_email exists and checks if the new password 
+           meets the requirements, and updates the db if it does
+Next Step: Are we using temp password or a table containing unique codes for every user?
+"""
+             
