@@ -113,8 +113,7 @@ def lambda_handler(event, context):
 
 if __name__ == "__main__":
     body = {
-        "user_id": "2903e1b4-9a86-11ec-8341-dc1ba10bf9f9",
-        "user_password": "Prad#ji"
+        "user_email": "2903e1b4-9a86-11ec-8341-dc1ba10bf9f9",
         }
 
     event = {
