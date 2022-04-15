@@ -163,7 +163,7 @@ function enableScroll() {
     window.onscroll = function() {};
 }
 
-const checkpoint = 400;
+const checkpoint = 300;
 const title = document.getElementById('banner_title');
 var opacity = 0;
 
