@@ -132,6 +132,28 @@ def lambda_handler(event, context):
 
         server.quit()
 
+        # checking if the user already has a record in the unique_table
+
+        user_unique_code_count = "SELECT COUNT(*) FROM avocado1.unique_code_table where user_email = \'" + \
+            user_email + "\';"
+        # print (user_id_query_count)
+
+        user_unique_db_count = connection.execute(user_unique_code_count)
+
+        # print(user_id_db_count)
+
+        for row in user_unique_db_count:
+            user_unique_count = row[0]
+
+        print(user_unique_count)
+
+        if(user_unique_count == 1):
+
+            user_unique_delete_query = "DELETE FROM avocado1.unique_code_table WHERE user_email = \'" + \
+                user_email + "\';"
+
+            connection.execute(user_unique_delete_query)
+
         sql = "INSERT INTO unique_code_table(user_email, unique_code) VALUES (%s, %s)"
 
         val = (user_email, unique_code)
@@ -146,7 +168,7 @@ def lambda_handler(event, context):
 
 if __name__ == "__main__":
     body = {
-        "user_email": "p.prahas@gmail.com"
+        "user_email": "ppattem@purdue.edu"
     }
 
     event = {
