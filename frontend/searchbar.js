@@ -11,26 +11,26 @@ function gotoRest() {
 }
 
 
-/* This is list of all restaurants. Modify the array below. */
+/* List of all restaurants. */
 var restaurants = [
-  'Wendy\'s',
+  'Wendys',
   'Peppercorns Kitchen',
   'Panda Express',
   'Oishi',
-  'McDonald\'s',
+  'McDonalds',
   'Little Caesars Pizza',
   'Kung Fu Tea',
   'Kimchi Restaurant',
   'Khaana Khazana',
-  'Jimmy John\'s Sandwiches',
-  'It\'s Just Wings',
-  'Hala\'s Grill',
+  'Jimmy Johns Sandwiches',
+  'Its Just Wings',
+  'Halas Grill',
   'Green Leaf',
-  'Domino\'s',
+  'Dominos',
   'Dakshin',
   'Chipotle',
   'Chick-fil-A',
-  'Aj\'s Burgers. Beef. Beer'
+  'Ajs Burgers. Beef. Beer'
 ];
 
 for (i = 0; i < restaurants.length; i++){
