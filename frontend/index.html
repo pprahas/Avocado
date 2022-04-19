@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="font.css">
     <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>AVOCADO - Main Page</title>
   </head>
   <body>
@@ -16,6 +17,12 @@
       <div class="logo">
         AVOCADO
       </div>
+      <form id="form" class="search_form" autocomplete="off">
+        <div class="autocomplete">
+          <input class="searchbar" id="myInput" type="text" name="myCountry" placeholder="Search Restaurant...">
+        </div>
+        <button id="submit" class="searchbar_submit" type="submit"><i class="fa fa-search"></i></button>
+      </form>
       <nav>
         <ul>
           <li><a href="index.html">Homepage</a></li>
@@ -76,5 +83,6 @@
 
     <script src="index.js" ></script>
     <script src="respond.js" ></script>
+    <script src = "searchbar.js"></script>
   </body>
 </html>
