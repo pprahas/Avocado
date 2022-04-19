@@ -9,9 +9,9 @@ MSG_REQUEST_NO_BODY = {"status": 500,
 MSG_REQUEST_INCORRECT_FORMAT = {
     "status": 500, "statusText": "Requests incorrect format.", "body": {}}
 MSG_SUCCESS = {"status": 200,
-               "statusText": "Your password has been successfully reset.", "body": {}}
+               "statusText": "The user's password has been successfully changed.", "body": {}}
 MSG_FAIL_TO_CREATE = {
-    "status": 422, "statusText": "Your password could not be reset.", "body": {}}
+    "status": 422, "statusText": "The user's password could not be changed.", "body": {}}
 
 
 def input_checking(func):
@@ -26,7 +26,6 @@ def input_checking(func):
 
         """decorator for input checking"""
         try:
-            assert content.get("user_email"), "User email not found"
             assert content.get("user_password"), "User password not found"
             assert content.get(
                 "new_user_password"), "New User password not found"
@@ -38,7 +37,7 @@ def input_checking(func):
             # return data
             return {"status": 422, "statusText": "Account field missing.", "body": str(e)}
 
-        # password input validation
+         # password input validation
         password = content.get("new_user_password")
 
         if(len(password) < 7):
@@ -131,26 +130,12 @@ def lambda_handler(event, context):
     # print ("THE PASSWORD FROM THE DB IS", user_password_db)
 
     if(user_password_hashed != user_password_db):
-        return {"status": 422, "statusText": "The password you entered is incorrect.", "body": {}}
+        return {"status": 422, "statusText": "The user entered the wrong password.", "body": {}}
 
     new_user_password = event.get('new_user_password')
 
     new_user_password_hashed = sha256(
         new_user_password.encode('utf-8')).hexdigest()
-
-    unique_code_user = event.get('unique_code')
-
-    unique_code_query = "SELECT unique_code FROM avocado1.unique_code_table where user_email = \'" + \
-        user_email + "\';"
-
-    unique_code_db_raw = connection.execute(unique_code_query)
-
-    for row in unique_code_db_raw:
-
-        unique_code_db = row[0]
-
-    if(unique_code_user != unique_code_db):
-        return {"status": 422, "statusText": "The unique code you entered is incorrect.", "body": {}}
 
     try:
         print("hashed_password is " + new_user_password_hashed)
@@ -172,11 +157,10 @@ def lambda_handler(event, context):
 
 if __name__ == "__main__":
     body = {
-        "user_email": "ppattem@purdue.edu",
+        "user_email": "p.prahas@gmail.com",
         "user_password": "Prado-156",
-        "new_user_password": "Prado-1156",
-        "confirm_new_user_password": "Prado-1156",
-        "unique_code": "229618a6057047a39a4da421bd8dbbd8"
+        "new_user_password": "Prado-222156",
+        "confirm_new_user_password": "Prado-222156"
     }
 
     event = {

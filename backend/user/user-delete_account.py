@@ -5,8 +5,8 @@ from hashlib import sha256
 
 MSG_REQUEST_NO_BODY = {"status": 500, "statusText": "Requests has no body.", "body": {}}
 MSG_REQUEST_INCORRECT_FORMAT = {"status": 500, "statusText": "Requests incorrect format.", "body": {}}
-MSG_SUCCESS = {"status": 200, "statusText": "The user's account has now been deleted", "body": {}}
-MSG_FAIL_TO_CREATE = {"status": 422, "statusText": "User does not exist or the password is incorrect", "body": {}}
+MSG_SUCCESS = {"status": 200, "statusText": "The user's account has successfully been deleted", "body": {}}
+MSG_FAIL_TO_CREATE = {"status": 422, "statusText": "User email does not exist", "body": {}}
 
 def input_checking( func ):
 
@@ -18,8 +18,7 @@ def input_checking( func ):
 
         """decorator for input checking"""
         try:
-            assert content.get( "user_id" ), "User ID not found"
-            assert content.get( "user_password" ), "User password not found"
+            assert content.get( "user_email" ), "User email not found"
             print(event)
 
 
@@ -40,7 +39,6 @@ def db_connection():
     server = "avocado-348.cgooazgc1htx.us-east-1.rds.amazonaws.com"
     database = "avocado1"
 
-
     db_url = "mysql+pymysql://{}:{}@{}/{}".format(username, password, server, database)
     engine = db.create_engine(db_url, echo=False)
     engine.connect()
@@ -51,37 +49,32 @@ def db_connection():
 def lambda_handler(event, context):
 
     #retrieving from the json file 
-    user_id = event.get('user_id')
-    user_password = event.get('user_password')
+    user_email = event.get('user_email')
 
-    print(user_id)
-    print(user_password)
     # connect to db
     engine = db_connection()
-
     connection = engine.connect()
 
-    #checking if the id exists
+    #checking if the email exists
 
-    user_id_query_count = "SELECT COUNT(user_id) FROM avocado1.user_info where user_id = \'" + user_id + "\';"
+    user_email_query_count = "SELECT COUNT(user_id) FROM avocado1.user_info where user_email = \'" + user_email + "\';"
     # print (user_id_query_count)
         
-    user_id_db_count = connection.execute(user_id_query_count)
+    user_email_db_count = connection.execute(user_email_query_count)
 
     # print(user_id_db_count)
 
-    for row in user_id_db_count:
-        user_id_count = row[0]
+    for row in user_email_db_count:
+        user_email_count = row[0]
     
     # print(user_id_count)
 
-    if(user_id_count == 0):
+    if(user_email_count == 0):
         return MSG_FAIL_TO_CREATE
     
     #checking if password exists
 
-    user_password_query = "SELECT user_password FROM avocado1.user_info where user_id = \'" + user_id + "\';"
-
+    """ 
     user_password_db_raw = connection.execute(user_password_query)
 
     for row in user_password_db_raw:
@@ -95,26 +88,26 @@ def lambda_handler(event, context):
     if(user_password_hashed != user_password_db):
         return MSG_FAIL_TO_CREATE
 
-    
+    """
+
     try:
         # sql = "INSERT INTO user_info(name, user_id, payment_type, birthday, user_email, user_password) VALUES (%s, %s, %s, %s, %s, %s)" 
         # val = (name, userid, payment, birthday, email, hashed_password)
         # connection.execute(sql,val);
 
-        user_account_delete_query = "DELETE FROM avocado1.user_info WHERE user_id = \'" + user_id + "\';"
+        user_account_delete_query = "DELETE FROM avocado1.user_info WHERE user_email = \'" + user_email + "\';"
 
         connection.execute(user_account_delete_query)
         
         return MSG_SUCCESS
 
     except Exception as e:
-        print("Delete failed")
+        print("The user account failed to delete.")
         return MSG_FAIL_TO_CREATE
 
 if __name__ == "__main__":
     body = {
-        "user_id": "2903e1b4-9a86-11ec-8341-dc1ba10bf9f9",
-        "user_password": "Prad#ji"
+        "user_email": "1234@asdf.asdf",
         }
 
     event = {

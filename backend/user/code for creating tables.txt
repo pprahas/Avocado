@@ -44,7 +44,7 @@ rows = connection.execute(
       );
       """)
 
-      connection.execute(
+connection.execute(
               """
               create table events(
               date DATE,
@@ -54,3 +54,10 @@ rows = connection.execute(
              );
               """
           )
+rows = connection.execute(
+            """
+            create table unique_code_table(
+            user_email VARCHAR(45),
+            unique_code VARCHAR(45)
+            );
+            """)
