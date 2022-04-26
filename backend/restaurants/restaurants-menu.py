@@ -1,5 +1,6 @@
 import sqlalchemy as db
 import json
+import requests
 
 MSG_REQUEST_NO_BODY = {"status": 500, "statusText": "Requests has no body.", "body": {}}
 MSG_REQUEST_INCORRECT_FORMAT = {"status": 500, "statusText": "Requests incorrect format.", "body": {}}
@@ -38,7 +39,6 @@ def db_connection():
     password = "avocado123"
     server = "avocado-348.cgooazgc1htx.us-east-1.rds.amazonaws.com"
     database = "avocado1"
-
     db_url = "mysql+pymysql://{}:{}@{}/{}".format(username, password, server, database)
     engine = db.create_engine(db_url, echo=False)
     engine.connect()
@@ -68,32 +68,47 @@ def lambda_handler(event, context):
    
     bucket_name = 'avocado-bucket-1'
 
-    result_list = []
+    result_dict = {
+        "pic": [],
+        "no_pic": []
+    }
 
     counter = 0
     for food in result:
-        if counter == 4:
-            break
-        result_list.append(
-            {
-                "rest_name": rest_name,
-                "food_id": food.food_id,
-                "food_name": food.food_name,
-                "price" : food.price,
-                "rating" : food.rating,
-                # "image": food.filepath_s3,
-                "image": "https://{}.s3.amazonaws.com/{}".format(bucket_name, 'MENU/{}/{}.png'.format(rest_id, food.food_id))
-            }
-        )
 
+        response = requests.get("https://{}.s3.amazonaws.com/{}".format(bucket_name, 'MENU/{}/{}.png'.format(rest_id, food.food_id)))
+
+        if response.status_code == 200:
+            #IMAGES FOUND
+            result_dict["pic"].append(
+                {
+                    "rest_name": rest_name,
+                    "food_id": food.food_id,
+                    "food_name": food.food_name,
+                    "price" : food.price,
+                    "rating" : food.rating,
+                    "image": "https://{}.s3.amazonaws.com/{}".format(bucket_name, 'MENU/{}/{}.png'.format(rest_id, food.food_id))
+                }
+            )
+        else:
+            #NO IMAGES FOUND
+            result_dict["no_pic"].append(
+                {
+                    "rest_name": rest_name,
+                    "food_id": food.food_id,
+                    "food_name": food.food_name,
+                    "price" : food.price,
+                    "rating" : food.rating
+                }
+            )
+            
         counter += 1
 
-    MSG_SUCCESS['body'] = result_list
+    MSG_SUCCESS['body'] = result_dict
        
 
     #이 트라이는 항상 있어야 함
     try:
-
         return MSG_SUCCESS
 
     except Exception as e:
@@ -103,7 +118,6 @@ def lambda_handler(event, context):
 
 
 if __name__ == "__main__":
-    
     #  engine = db_connection()
 
     #  connection = engine.connect()
@@ -119,12 +133,12 @@ if __name__ == "__main__":
     #  print(menu_dic)
 
     body = {
-        "rest_id": "1000"       
+        "rest_id": "1003"       
     }
 
     event = {
         "body": json.dumps(body)
-     }
+    }
     context = ""
 
     response = lambda_handler(event, context)
