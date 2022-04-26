@@ -73,6 +73,15 @@
    height: 90%;
  }
 
+ .table_container{
+  width: 90%;
+  min-height: 100px;
+  min-width: 50px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 
  .main_container{
    display: flex;

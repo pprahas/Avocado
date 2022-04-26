@@ -114,7 +114,7 @@ def lambda_handler(event, context):
         #                                                                          cart.c.order_number == 0))
         # connection.execute(sql)
 
-        MSG_SUCCESS['body'] = result
+        MSG_SUCCESS['body'] = { "order_number": order_number }
     
     try:
         return MSG_SUCCESS

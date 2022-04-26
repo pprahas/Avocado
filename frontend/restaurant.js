@@ -17,8 +17,13 @@ fetch('https://3b01ihtpq4.execute-api.us-east-1.amazonaws.com/default/restaurant
         if (data.status == 200) {
             let val = data.body;
             let output = "";
+            
+            let pic = data.body.pic;
+            let no_pic = data.body.no_pic
 
-            val.forEach(function(menu) {
+            let count = 0;
+            for (let menu of pic) {
+                if (count == 4) { break; }
                 output += `
                 <div id=${menu.food_id} class="menu_container">
                     <img class="menu_image" src=${menu.image} alt="">
@@ -28,13 +33,29 @@ fetch('https://3b01ihtpq4.execute-api.us-east-1.amazonaws.com/default/restaurant
                     <div class="menu_price">
                     ${menu.price}
                 </div>
-                <button id=${menu.food_id} class="addToCart" type="submit">Add to Cart</button>
-            </div>`
-            const menu_name = document.getElementById("rest_name");
-            menu_name.innerHTML = menu.rest_name;
-            });
+                    <button id=${menu.food_id} class="addToCart" type="submit">Add to Cart</button>
+                </div>`
+                const menu_name = document.getElementById("rest_name");
+                menu_name.innerHTML = menu.rest_name;
+                count += 1;
+            }
+
+            let output2 = "";
+            for (let menu of no_pic) {
+                output2 += `
+                <tr>
+                    <td>${menu.food_name}</td>
+                    <td>${menu.price}</td>
+                    <td>
+                        <button id=${menu.food_id} class="addToCart" type="submit">Add to Cart</button>
+                    </td>
+                </tr>
+                `
+            }            
 
             document.getElementById('restaurant_menu').innerHTML = output;
+            document.getElementById('cart_list').innerHTML = output2;
+
             let btn = document.getElementsByClassName('addToCart');
             // console.log(btn);
             for (var i = 0; i < btn.length; i++) {

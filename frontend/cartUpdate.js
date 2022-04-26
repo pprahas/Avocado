@@ -17,11 +17,14 @@ function submitOrder() {
         console.log(data);
 
         if (data.status === 200) {
-          let output = "";
+            let output = "";
             // use this poulate the html in cofirmation page
-            cart_list.forEach(function(menu) {
-              console.log(menu);
-            });
+            // cart_list.forEach(function(menu) {
+            //   console.log(menu);
+            // });
+            let order_number = data.body.order_number
+
+            localStorage.setItem('order_receipt', order_number);
             window.location = 'confirmationPage.html';
 
         } else {
