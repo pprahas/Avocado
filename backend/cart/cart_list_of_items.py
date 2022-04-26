@@ -64,7 +64,8 @@ def lambda_handler(event, context):
         return MSG_USER_NOT_EXIST
 
     cart = db.Table('cart', metadata, autoload=True, autoload_with=engine)
-    query = db.select(cart).where(cart.columns.user_id == user_id and cart.columns.order_number == 0)
+    # query = db.select(cart).where(cart.columns.user_id == user_id and cart.columns.order_number == 0)
+    query = db.select(cart).where(db.and_(cart.columns.user_id == user_id, cart.columns.order_number == 0))
     result = connection.execute(query).fetchall()
 
     food_list = []

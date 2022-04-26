@@ -2,8 +2,6 @@ import json
 import sqlalchemy as db
 import datetime
 
-from sqlalchemy import null
-
 MSG_REQUEST_NO_BODY = {"status": 500, "statusText": "Requests has no body.", "body": {}}
 MSG_REQUEST_INCORRECT_FORMAT = {"status": 500, "statusText": "Requests incorrect format.", "body": {}}
 MSG_SUCCESS = {"status": 200, "statusText": "Show quantity success.", "body": {}}
@@ -67,7 +65,8 @@ def lambda_handler(event, context):
 
     try:
         cart = db.Table('cart', metadata, autoload=True, autoload_with=engine)
-        query = db.select(db.func.sum(cart.columns.quantity)).where(cart.columns.user_id == user_id and cart.columns.order_number == 0)
+        # query = db.select(db.func.sum(cart.columns.quantity)).where(cart.columns.user_id == user_id and cart.columns.order_number == 0)
+        query = db.select(db.func.sum(cart.columns.quantity)).where(db.and_(cart.columns.user_id == user_id, cart.columns.order_number == 0))
         result = connection.execute(query).fetchone()[0]
 
         if not result:

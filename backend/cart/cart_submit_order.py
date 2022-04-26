@@ -69,6 +69,7 @@ def lambda_handler(event, context):
             break
 
     user_info = db.Table('user_info', metadata, autoload=True, autoload_with=engine)
+
     query = db.select(user_info.columns.user_id).where(user_info.columns.user_email == user_email)
     user_id = connection.execute(query).fetchone()
     
@@ -78,11 +79,13 @@ def lambda_handler(event, context):
         return MSG_USER_NOT_EXIST
 
     cart = db.Table('cart', metadata, autoload=True, autoload_with=engine)
-    query = db.select(cart).where(cart.columns.user_id == user_id and cart.columns.order_number == 0)
+    # query = db.select(cart).where(cart.columns.user_id == user_id and cart.columns.order_number == 0)
+    query = db.select(cart).where(db.and_(cart.columns.user_id == user_id, cart.columns.order_number == 0))
     result = connection.execute(query).fetchall()
 
     rest_id_list = []
 
+    order_history = db.Table('order_history', metadata, autoload=True, autoload_with=engine)
     for cart_item in result:
         # print(cart_item)
         if cart_item.rest_id not in rest_id_list:
@@ -90,6 +93,14 @@ def lambda_handler(event, context):
             sql = "INSERT INTO order_history(order_number, user_id, rest_id, price, options, status, order_date) VALUES (%s, %s, %s, %s, %s, %s, %s)"
             value = (order_number, cart_item.user_id, cart_item.rest_id, cart_item.price, option, status, today)
             connection.execute(sql, value)
+            # query = db.insert(order_history).values(order_number= order_number, 
+            #                             user_id= cart_item.user_id, 
+            #                             rest_id= cart_item.rest_id, 
+            #                             price= cart_item.price, 
+            #                             options= option, 
+            #                             status= status, 
+            #                             order_date =today)
+            # connection.execute(query) 
 
             rest_id_list.append(cart_item.rest_id)
 
@@ -97,6 +108,13 @@ def lambda_handler(event, context):
         sql = "UPDATE cart set order_number = %s WHERE user_id = %s and rest_id = %s and food_id = %s and order_number = 0"
         value = (order_number, cart_item.user_id, cart_item.rest_id, cart_item.food_id)
         connection.execute(sql, value)
+
+        # sql = db.update(cart).values(order_number = order_number).where(db.and_(cart.c.user_id == cart_item.user_id,
+        #                                                                          cart.c.rest_id == cart_item.rest_id, 
+        #                                                                          cart.c.order_number == 0))
+        # connection.execute(sql)
+
+        MSG_SUCCESS['body'] = result
     
     try:
         return MSG_SUCCESS

@@ -73,7 +73,8 @@ def lambda_handler(event, context):
     try:
         cart = db.Table('cart', metadata, autoload=True, autoload_with=engine)
         query = db.delete(cart)
-        query = query.where(cart.columns.user_id == user_id and food_id == food_id and cart.columns.order_number == 0)
+        # query = query.where(cart.columns.user_id == user_id and food_id == food_id and cart.columns.order_number == 0)
+        query = query.where(db.and_(cart.columns.user_id == user_id, cart.columns.food_id == food_id, cart.columns.order_number == 0))
         results = connection.execute(query)
 
         return MSG_SUCCESS

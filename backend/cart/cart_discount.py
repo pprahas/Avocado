@@ -74,7 +74,8 @@ def lambda_handler(event, context):
 
     cart = db.Table('cart', metadata, autoload=True, autoload_with=engine)
     query = db.select(db.func.sum(cart.columns.quantity * cart.columns.price).label('sum_price'))
-    query = query.where(cart.columns.user_id == user_id and cart.columns.order_number == 0)
+    # query = query.where(cart.columns.user_id == user_id and cart.columns.order_number == 0)
+    query = query.where(db.and_(cart.columns.user_id == user_id, cart.columns.order_number == 0))
     result = connection.execute(query).fetchone()
 
     print(result)
