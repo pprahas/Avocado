@@ -1,3 +1,4 @@
+from ctypes import sizeof
 import json
 import sqlalchemy as db
 
@@ -69,49 +70,28 @@ def lambda_handler(event, context):
 
     # ONLY FOR ORDER AGAIN -----------------------------------------------------------------------------------------------
 
-    sql = "SELECT rest_id FROM order_history WHERE user_id = '{}' ORDER BY order_date DESC LIMIT 1".format(user_id)
-    rows = connection.execute(sql)
-
-    
-    # #s3 initialization
-    # s3 = boto3.resource('s3')
-    # bucket_name = 'avocado-bucket-1'
-
-    # #Initializinf stuff for resizing
-    # FIXED_WIDTH = 300
-    # FIXED_HEIGHT = 200
-    # resize = 0.1
+    sql = "SELECT DISTINCT rest_id FROM order_history WHERE user_id = '{}' ORDER BY order_date DESC LIMIT 4".format(user_id)
+    rows = connection.execute(sql).fetchall()
+    print(rows)
 
     bucket_name = 'avocado-bucket-1'
 
+    result = []
+
     for row in rows:
-        result = row[0]
-        
-
-    sql = "SELECT * FROM rest_info WHERE rest_id = '{}'".format(result)
-
-    rows = connection.execute(sql)
-    latest_rest = []
+        result.append(row)
     
-    for row in rows:
-        # filename = row.filepath_s3
-        # s3_object = s3.Bucket(bucket_name).Object(filename).get()
-        # encoded_string_to_frontend = base64.b64encode(s3_object['Body'].read())
+    temp = []
 
-        # #resizing image
-        # img = Image.open(BytesIO(base64.b64decode(encoded_string_to_frontend)))
-        # resize = FIXED_WIDTH/img.size[0] if (FIXED_WIDTH/img.size[0] > FIXED_HEIGHT/img.size[1]) else FIXED_HEIGHT/img.size[1]
+    for i in range(len(result)):
+        sql = "SELECT * FROM rest_info WHERE rest_id = '{}'".format(result[i].rest_id)
+        rows = connection.execute(sql)
+        for row in rows:
+            temp.append(row)
+    
+    latest_rest = []
 
-        # x = img.size[0]
-        # y = img.size[1]
-
-        # img = img.resize(( int(x*resize), int(y*resize)),Image.ANTIALIAS)
-
-        # buffered = BytesIO()
-        # img.save(buffered, format="png")
-        # img_str = base64.b64encode(buffered.getvalue())
-
-        # img_str = img_str.decode("utf-8")
+    for row in temp:
 
         latest_rest.append(
             {
