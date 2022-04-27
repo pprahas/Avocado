@@ -156,9 +156,9 @@ def lambda_handler(event, context):
 
 if __name__ == "__main__":
     body = {
-        "name": "Prado aqef",
+        "name": "User fifteen",
         "birthday": "2021-03-01",
-        "email": "sum@c8ffof.uk",
+        "email": "sum@c998ffof.uk",
         "password": "Pra#dji",
         "confirm_password":"Pra#dji"
     }

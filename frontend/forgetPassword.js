@@ -1,18 +1,14 @@
 const element = document.getElementById("submit_button");
 element.addEventListener("click", myFunction);
 
-const element2 = document.getElementById("forget_password_button");
-element2.addEventListener("click", myFunction2);
-
 function myFunction(e) {
   e.preventDefault();
   let user_email = document.getElementById("user_id").value;
-  let password = document.getElementById("password").value;
 
-  fetch("https://9udp7kgai1.execute-api.us-east-1.amazonaws.com/default/user-login",
+  fetch("https://8307zzf0x2.execute-api.us-east-1.amazonaws.com/default/user-forgot_password",
   {
       method: "POST",
-      body: JSON.stringify({user_email: user_email, user_password: password})
+      body: JSON.stringify({user_email: user_email})
   })
   .then((res) => res.json())
   .then((data) => {
@@ -20,7 +16,7 @@ function myFunction(e) {
 
       if (data.status === 200) {
           localStorage.setItem('user_email', user_email);
-          window.location = 'index.html';
+          window.location = 'resetPassword.html';
       } else if (data.status === 422) {
           let errors = data.body;
           let output = "";
@@ -32,10 +28,4 @@ function myFunction(e) {
           document.getElementById('errors').innerHTML = output;
       }
   })
-}
-
-function myFunction2(e){
-     
-          window.location = 'forgetPassword.html';
-     
 }

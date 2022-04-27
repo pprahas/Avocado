@@ -1,7 +1,6 @@
 import json
 from logging import exception
 import sqlalchemy as db
-from hashlib import sha256
 
 MSG_REQUEST_NO_BODY = {"status": 500, "statusText": "Requests has no body.", "body": {}}
 MSG_REQUEST_INCORRECT_FORMAT = {"status": 500, "statusText": "Requests incorrect format.", "body": {}}
@@ -107,7 +106,7 @@ def lambda_handler(event, context):
 
 if __name__ == "__main__":
     body = {
-        "user_email": "1234@asdf.asdf",
+        "user_email": "p.prahas@gmail.com",
         }
 
     event = {
