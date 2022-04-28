@@ -76,12 +76,18 @@ a:hover{
   text-align: left;
 }
 
+.menu_container{
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .menu_image{
   max-width: 160px;
   height: 160px;
   object-fit:cover;
 }
-
 
 .menu_name{
   text-align: center;
@@ -92,7 +98,7 @@ a:hover{
 }
 
 button {
-  width: 100%;
+  width: 120px;
   padding: 5px;
   margin-top: 10px;
   background: #495057;

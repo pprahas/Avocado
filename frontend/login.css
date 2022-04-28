@@ -111,14 +111,21 @@ a:hover{
 }
 
 .login_form button {
-  width: 30%;
-  padding: 10px;
+  width: 40%;
+  height: 35px;
   background: #495057;
   color: white;
   font-size: 14px;
   border: 1px solid #495057;
   cursor: pointer;
   margin-bottom: 20px;
+}
+
+.button_container{
+  margin-top: 30px;
+  width: 100%;
+  display: inline-flex;
+  justify-content:space-around;
 }
 
 .error_signup {
