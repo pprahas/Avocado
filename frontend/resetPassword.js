@@ -6,14 +6,14 @@ function resetPassword(e) {
     e.preventDefault();
 
     let email = document.getElementById('email').value;
-    let oldPassword = document.getElementById('oldPassword').value;
+    // let oldPassword = document.getElementById('oldPassword').value;
     let newPassword = document.getElementById('confirmPassword').value;
     let newConfirmPassword = document.getElementById('newConfirmPassword').value;
     let uniqueCode = document.getElementById('uniqueCode').value;
     
     let data = {
         user_email: email,
-        user_password: oldPassword,
+        // user_password: oldPassword,
         new_user_password: newPassword,
         confirm_new_user_password: newConfirmPassword,
         unique_code: uniqueCode
