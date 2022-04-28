@@ -1,9 +1,9 @@
 const element = document.getElementById("delete_account_button");
-element.addEventListener("click", myFunction);
 
 function deleteAccount(a){
-  a.preventDefault();
-  let user_email = document.getElementById("user_id").value;
+  const user_email = localStorage.getItem("user_email")
+
+  console.log(user_email);
 
   fetch("https://3a5aeuk5d7.execute-api.us-east-1.amazonaws.com/default/user-delete_account",
   {
@@ -29,10 +29,11 @@ function deleteAccount(a){
       }
   })
 
+  signout();
+
 }
 
 function changePassword(a){
-
     console.log("PASSWORD CHANGE PAGE");
     localStorage.clear();
     window.location = 'changePassword.html';
