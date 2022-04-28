@@ -11,14 +11,14 @@ function gotoRest() {
 }
 
 
-/* List of all restaurants. */
+/* List of all restaurants. apostrophe is troublesome, so replace it with &#39;*/
 var restaurants = [
   "Wendy&#39;s",
   'Peppercorn&#39;s Kitchen',
   'Panda Express',
   'Oishi',
   'McDonald&#39;s',
-  'Little Caesars Pizza',
+  'Little Caesar&#39;s Pizza',
   'Kung Fu Tea',
   'Kimchi Restaurant',
   'Khaana Khazana',
