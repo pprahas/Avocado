@@ -1,6 +1,7 @@
 let rest_id = localStorage.getItem('rest_id');
+console.log("rest_id:", rest_id)
+
 let user_id = localStorage.getItem("user_email");
-const ele = document.getElementById("most_popular");
 const loading_screen = document.getElementById("loading_container");
 
 

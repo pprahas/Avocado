@@ -174,6 +174,6 @@ window.addEventListener("scroll", () => {
   } else {
     opacity = 0;
   }
-  console.log(opacity)
+//   console.log(opacity)
   title.style.opacity = opacity;
 });

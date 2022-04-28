@@ -1,6 +1,4 @@
 import json
-from unicodedata import category
-from unittest import result
 import sqlalchemy as db
 
 
