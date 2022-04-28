@@ -27,7 +27,7 @@ def input_checking(func):
         """decorator for input checking"""
         try:
             assert content.get("user_email"), "User email not found"
-            assert content.get("user_password"), "User password not found"
+            # assert content.get("user_password"), "User password not found"
             assert content.get(
                 "new_user_password"), "New User password not found"
             assert content.get(
@@ -115,23 +115,23 @@ def lambda_handler(event, context):
     if(user_email_count == 0):
         return {"status": 422, "statusText": "The email address does not exist.", "body": {}}
 
-    # checking if password exists
-    user_password = event.get('user_password')
+    # # checking if password exists
+    # user_password = event.get('user_password')
 
-    user_password_query = "SELECT user_password FROM avocado1.user_info where user_email = \'" + user_email + "\';"
+    # user_password_query = "SELECT user_password FROM avocado1.user_info where user_email = \'" + user_email + "\';"
 
-    user_password_db_raw = connection.execute(user_password_query)
+    # user_password_db_raw = connection.execute(user_password_query)
 
-    for row in user_password_db_raw:
-        user_password_db = row[0]
+    # for row in user_password_db_raw:
+    #     user_password_db = row[0]
 
-    user_password_hashed = sha256(user_password.encode('utf-8')).hexdigest()
+    # user_password_hashed = sha256(user_password.encode('utf-8')).hexdigest()
 
-    # print("THE USER PASSWORD HASHED IS", user_password_hashed)
-    # print ("THE PASSWORD FROM THE DB IS", user_password_db)
+    # # print("THE USER PASSWORD HASHED IS", user_password_hashed)
+    # # print ("THE PASSWORD FROM THE DB IS", user_password_db)
 
-    if(user_password_hashed != user_password_db):
-        return {"status": 422, "statusText": "The password you entered is incorrect.", "body": {}}
+    # if(user_password_hashed != user_password_db):
+    #     return {"status": 422, "statusText": "The password you entered is incorrect.", "body": {}}
 
     new_user_password = event.get('new_user_password')
 
@@ -173,10 +173,10 @@ def lambda_handler(event, context):
 if __name__ == "__main__":
     body = {
         "user_email": "ppattem@purdue.edu",
-        "user_password": "Prado-156",
+        # "user_password": "Prado-156",
         "new_user_password": "Prado-1156",
         "confirm_new_user_password": "Prado-1156",
-        "unique_code": "229618a6057047a39a4da421bd8dbbd8"
+        "unique_code": "a9660561810a4c0a9c2ef36d013d053f"
     }
 
     event = {
