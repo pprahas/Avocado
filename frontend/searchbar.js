@@ -13,30 +13,25 @@ function gotoRest() {
 
 /* List of all restaurants. */
 var restaurants = [
-  'Wendys',
-  'Peppercorns Kitchen',
+  "Wendy&#39;s",
+  'Peppercorn&#39;s Kitchen',
   'Panda Express',
   'Oishi',
-  'McDonalds',
+  'McDonald&#39;s',
   'Little Caesars Pizza',
   'Kung Fu Tea',
   'Kimchi Restaurant',
   'Khaana Khazana',
-  'Jimmy Johns Sandwiches',
-  'Its Just Wings',
+  'Jimmy John&#39;s Sandwiches',
+  'It&#39;s Just Wings',
   'Halas Grill',
   'Green Leaf',
   'Dominos',
   'Dakshin',
   'Chipotle',
   'Chick-fil-A',
-  'Ajs Burgers. Beef. Beer'
+  'Aj&#39;s Burgers. Beef. Beer'
 ];
-
-for (i = 0; i < restaurants.length; i++){
-  console.log(restaurants[i]);
-}
-
 
 autocomplete(document.getElementById("myInput"), restaurants);
 
@@ -68,6 +63,7 @@ function autocomplete(inp, arr) {
           b.innerHTML += arr[i].substr(val.length);
           /*insert a input field that will hold the current array item's value:*/
           b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+          console.log("here: " + arr[i]);
           /*execute a function when someone clicks on the item value (DIV element):*/
               b.addEventListener("click", function(e) {
               /*insert the value for the autocomplete text field:*/
