@@ -103,6 +103,17 @@ def lambda_handler(event, context):
             # connection.execute(query) 
 
             rest_id_list.append(cart_item.rest_id)
+        else:
+            sql = "SELECT price from order_history where order_number = %s and user_id = %s and rest_id = %s"
+            value = (order_number, cart_item.user_id, cart_item.rest_id)
+            result = connection.execute(sql, value).fetchone()
+            price = result[0] if result else 0
+
+            
+            sql = "UPDATE order_history set price = %s where order_number = %s and user_id = %s and rest_id = %s"
+            value = (price + cart_item.price, order_number, cart_item.user_id, cart_item.rest_id)
+            connection.execute(sql, value)
+
 
         # delete from cart
         sql = "UPDATE cart set order_number = %s WHERE user_id = %s and rest_id = %s and food_id = %s and order_number = 0"

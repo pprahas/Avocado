@@ -15,6 +15,11 @@ fetch("https://qz1ngk3uy3.execute-api.us-east-1.amazonaws.com/default/cart-confi
     if (data.status === 200) {
         let cart_list = data.body;
         
+        order_number = `
+          Order Number: ${order_receipt}
+        `
+        document.getElementById("order_number").innerHTML += order_number;
+
         let output = "";
         // use this poulate the html in cofirmation page
         cart_list.forEach(function(menu) {
