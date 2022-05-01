@@ -36,6 +36,7 @@ function submitOrder() {
 
 function modifyCart() {
     // console.log(this.id);
+    continueLoading();
     const myArray = this.id.split("+");
     let rest_id = myArray[0];
     let food_id = myArray[1]
@@ -53,6 +54,7 @@ function modifyCart() {
             var elem = document.getElementById(String(this.id)+"+cart-items");
             elem.remove();
             displayPricing();
+            finishLoading();
         } else {
             console.log(data.statusText)
         }

@@ -93,3 +93,8 @@ function finishLoading(){
   loading_screen.style.zIndex = "-100";
   loading_screen.style.opacity = "0";
 }
+
+function continueLoading(){
+  loading_screen.style.zIndex = "100";
+  loading_screen.style.opacity = "1";
+}
