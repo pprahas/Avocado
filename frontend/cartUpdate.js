@@ -7,6 +7,7 @@ function submitOrder() {
     console.log("Empty Cart");
     return;
   }
+  continueLoading();
     fetch("https://sdjarg81za.execute-api.us-east-1.amazonaws.com/default/cart-submit_order",
     {
         method: "POST",

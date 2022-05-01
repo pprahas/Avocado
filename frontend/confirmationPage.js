@@ -1,5 +1,7 @@
 let order_receipt = localStorage.getItem('order_receipt')
 let user_email = localStorage.getItem("user_email");
+const loading_screen = document.getElementById("loading_container");
+
 console.log(order_receipt)
 
 
@@ -11,10 +13,10 @@ fetch("https://qz1ngk3uy3.execute-api.us-east-1.amazonaws.com/default/cart-confi
 .then((res) => res.json())
 .then((data) => {
     console.log(data);
-    
+
     if (data.status === 200) {
         let cart_list = data.body;
-        
+
         order_number = `
           Order Number: ${order_receipt}
         `
@@ -34,9 +36,19 @@ fetch("https://qz1ngk3uy3.execute-api.us-east-1.amazonaws.com/default/cart-confi
           `
         });
         document.getElementById("food_list").innerHTML += output;
-
+        finishLoading();
     } else {
         console.log(data.statusText);
     }
 })
 
+function finishLoading(){
+  console.log("fetch complete");
+  loading_screen.style.zIndex = "-100";
+  loading_screen.style.opacity = "0";
+}
+
+function continueLoading(){
+  loading_screen.style.zIndex = "100";
+  loading_screen.style.opacity = "1";
+}
