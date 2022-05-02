@@ -56,16 +56,20 @@ a:hover{
 }
 
 .table_container{
-  width: 90%;
-  min-height: 100px;
-  min-width: 800px;
+  display: flex;
+  flex-direction: column;
+  width: 1000px;
+  height: 370px;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+  overflow: scroll;
+  border: 1px grey solid;
 }
 
 table {
-	width: 750px;
+  min-height: 100px;
+  width: 100%;
 	margin:50px auto;
   border:none;
   border-collapse: collapse;
@@ -123,13 +127,10 @@ td, th {
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  position: absolute;
   color: red;
   width: 90%;
   min-height: 50px;
-  left: 50%;
   bottom: 40%;
-  transform: translateX(-50%);
   font-size: 20px;
 }
 

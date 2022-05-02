@@ -35,7 +35,7 @@ function myFunction(e) {
 }
 
 function myFunction2(e){
-     
+
           window.location = 'forgetPassword.html';
-     
+
 }
