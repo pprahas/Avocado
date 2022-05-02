@@ -27,30 +27,31 @@
     <div class="margin_control">
     </div>
 
-    <div class="table_container">
-      <table>
-        <thead>
-          <tr>
-            <th>Restaurant</th>
-            <th>Menu</th>
-            <th>Quantity</th>
-            <th>Price</th>
-          </tr>
-        </thead>
-        <tbody id="cart_list">
-        </tbody>
-      </table>
-      <!-- discount row -->
-      <div id="discount" class="discount_container">
+    <div class="main_container">
+      <div class="table_container">
+        <table>
+          <thead>
+            <tr>
+              <th>Restaurant</th>
+              <th>Menu</th>
+              <th>Quantity</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody id="cart_list">
+          </tbody>
+        </table>
+        <!-- discount row -->
+        <div id="discount" class="discount_container">
+        </div>
       </div>
+
+
+      <div id="totalPrice" class="totalPrice_container">
+      </div>
+
+      <button id="submit_order" type="submit">Submit Order</button>
     </div>
-
-
-    <div id="totalPrice" class="totalPrice_container">
-    </div>
-
-    <button id="submit_order" type="submit">Submit Order</button>
-
   </body>
 
   <script src="cart.js">
