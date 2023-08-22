@@ -2,6 +2,8 @@
 
 Avocado is a full-stack food delivery platform that seamlessly connects you with local culinary delights. Indulge in a diverse selection of restaurants, placing orders effortlessly and experiencing the convenience of doorstep delivery. Check out the website using this [link](https://avocado-food-delivery.netlify.app/).
 
+![image](https://raw.githubusercontent.com/pprahas/Avocado/master/screenshot.png)
+
 # Key Features
 
 - Comprehensive Dining Experience: Avocado presents a diverse selection of local restaurants, streamlining effortless browsing, customization, and real-time tracking, ensuring a satisfying ordering journey from start to finish.
