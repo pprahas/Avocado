@@ -19,5 +19,7 @@ Avocado is a full-stack food delivery platform that seamlessly connects you with
 # Technologies and Deployment Stack
 
 - Backend uses AWS Lambda Functions in Python, S3, and API Gateway for functionality.
+
 - Data storage is managed through a MySQL database.
+
 - Frontend is developed using vanilla JavaScript, HTML, and CSS for a responsive user interface.
